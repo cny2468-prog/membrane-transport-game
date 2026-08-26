@@ -168,6 +168,9 @@
 /* 설명 다음에 성공 조건을 크게 확인하는 단계 시작 오버레이 */
 .goal-preview-card{width:min(700px,94vw);text-align:center;padding:46px 42px;animation:goal-preview-in .28s ease-out both}
 .goal-preview-card h2{font-size:56px;margin:8px 0 5px;color:var(--deep)}
+.goal-preview-mission{display:grid;gap:5px;margin:18px 0 16px;padding:15px 18px;background:var(--deep);color:#fff;border-left:7px solid var(--coral);text-align:left;box-shadow:5px 5px 0 #a8d8c4}
+.goal-preview-mission small{font:bold 10px sans-serif;letter-spacing:.16em;color:#f3c85e}
+.goal-preview-mission strong{font:22px/1.45 "Jua",sans-serif;font-weight:400}
 .goal-preview-subtitle{margin:0 0 24px;color:#5b706d;font-size:14px}
 .goal-preview-list{display:grid;gap:12px;text-align:left}
 .goal-preview-list .goal-line{margin:0;padding:15px 17px;background:#edf3ec;border:1px solid #c9d9cd;border-left:6px solid var(--coral);font-size:17px;line-height:1.45;align-items:center}
@@ -176,7 +179,7 @@
 
 @media(max-width:720px){.phospholipid{width:5px;height:14px}.phospholipid b{width:5px;height:5px}.phospholipid i{height:8px}.phospholipid.outer i{top:5px}.phospholipid.inner i{bottom:5px}.drop-slot.has-device .installed-device{width:54px;height:54px}.drop-slot.has-device{width:102px;min-height:104px}.intro-card .rule-grid{grid-template-columns:1fr}}
 
-@media(max-width:720px){.goal-preview-card{padding:34px 22px}.goal-preview-card h2{font-size:43px}.goal-preview-list .goal-line{font-size:15px;padding:13px 12px}}
+@media(max-width:720px){.goal-preview-card{padding:34px 22px}.goal-preview-card h2{font-size:43px}.goal-preview-mission strong{font-size:19px}.goal-preview-list .goal-line{font-size:15px;padding:13px 12px}}
 
 /* 단계가 오를수록 늘어나는 자유 배치 자리 */
 .drop-slot:nth-child(3){left:50%;right:auto;top:calc(100% - 62px);bottom:auto;transform:translateX(-50%)}

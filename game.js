@@ -248,6 +248,7 @@ function showGoalPreview() {
     <div class="goal-line"><i>${index + 1}</i><span>${goal}</span></div>
   `).join("");
   $("#goalPreviewTitle").textContent = `${state.stage + 1}단계 성공 조건`;
+  $("#goalPreviewMission").textContent = state.activeMission;
   $("#goalPreviewModal").classList.remove("hidden");
 }
 
