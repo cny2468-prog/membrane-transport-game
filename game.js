@@ -108,6 +108,10 @@ const missionVariants = [
 ];
 
 const ENERGY_TOOLS = new Set(["endocytosis", "exocytosis", "na-k-pump"]);
+const DIFFUSION_VARIANTS = [
+  { id: "oxygen", name: "산소 (O₂)", short: "O₂", color: "#67a7c5" },
+  { id: "carbon-dioxide", name: "이산화탄소 (CO₂)", short: "CO₂", color: "#8b8fbe" }
+];
 const state = { stage: 0, score: 0, stageScore: 0, stageScores: [null, null, null], seconds: 0, timerId: null, placements: {}, cycles: {}, counts: {}, selected: null, draggingTool: null, attempts: 0, hintUsed: false, running: false, sound: true, budget: 0, remainingBudget: 0, atpBindings: {}, activeMission: "", lastMissionIndexes: {}, lastCountKeys: {} };
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -260,6 +264,8 @@ function beginStageAfterPreview() {
 
 function setupStage() {
   const stage = currentStage();
+  const diffusion = DIFFUSION_VARIANTS[randomBetween([0, DIFFUSION_VARIANTS.length - 1])];
+  applyDiffusionVariant(stage, diffusion);
   clearInterval(state.timerId);
   state.seconds = stage.time;
   state.placements = {};
@@ -291,6 +297,14 @@ function setupStage() {
   renderGoals();
   updateBudget();
   updateTimer();
+}
+
+function applyDiffusionVariant(stage, diffusion) {
+  const substance = stage.substances.find(item => item.id === "oxygen");
+  if (!substance) return;
+  Object.assign(substance, { name: diffusion.name, short: diffusion.short, color: diffusion.color });
+  state.simpleDiffusionId = diffusion.id;
+  state.diffusionName = diffusion.name;
 }
 
 function startTimer() {
@@ -458,7 +472,12 @@ function goalChecks() {
 
 function renderGoals() {
   const checks = goalChecks();
-  $("#goalList").innerHTML = currentStage().goals.map((goal, index) => `<div class="goal-line ${checks[index] ? "done" : ""}"><i>${checks[index] ? "✓" : ""}</i><span>${goal}</span></div>`).join("");
+  const diffusionLabel = state.diffusionName || "산소 (O₂)";
+  const goals = currentStage().goals.map((goal, index) => {
+    const diffusionGoal = (state.stage === 0 && index === 1) || (state.stage === 1 && index === 2) || (state.stage === 2 && index === 2);
+    return diffusionGoal ? `${diffusionLabel}: 세포 안팎 개수 차이 1 이하` : goal;
+  });
+  $("#goalList").innerHTML = goals.map((goal, index) => `<div class="goal-line ${checks[index] ? "done" : ""}"><i>${checks[index] ? "✓" : ""}</i><span>${goal}</span></div>`).join("");
 }
 
 function calculateStageScore(checks = goalChecks()) {
@@ -645,9 +664,10 @@ function animateTransport(moves) {
       ];
       clone.animate(transportFrames, { duration: travelTime, delay, easing: "cubic-bezier(.45,.05,.2,1)", fill: "forwards" });
       if (device) setTimeout(() => device.animate([{ filter: "brightness(1)" }, { filter: "brightness(1.55) drop-shadow(0 0 7px #fff2a8)" }, { filter: "brightness(1)" }], { duration: 420 }), delay + 420);
-      if (state.stage === 0 && index === 0) {
+      if (move.tool === "simple" || move.tool === "facilitated") {
         const speedLabel = document.createElement("b");
         speedLabel.className = `transport-speed ${move.tool}`;
+        setTimeout(() => { speedLabel.textContent = `${move.from === "outside" ? "밖 → 안" : "안 → 밖"} · ${move.tool === "simple" ? "인지질 이중층" : "막 단백질"}`; }, delay);
         speedLabel.textContent = move.tool === "simple" ? "단순 확산 · 빠름" : "촉진 확산 · 느림";
         Object.assign(speedLabel.style, { left: `${gateX}px`, top: `${gateY - 26}px` });
         layer.appendChild(speedLabel);
