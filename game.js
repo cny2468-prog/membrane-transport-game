@@ -795,7 +795,7 @@ $("#startButton").addEventListener("click", () => {
   $("#introModal").classList.add("hidden");
   showGoalPreview();
   clearTimeout(state.goalPreviewTimer);
-  state.goalPreviewTimer = setTimeout(beginStageAfterPreview, 2200);
+  state.goalPreviewTimer = setTimeout(beginStageAfterPreview, 5000);
 });
 $("#runButton").addEventListener("click", runMembrane);
 $("#resetButton").addEventListener("click", resetPlacement);
