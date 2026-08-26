@@ -242,6 +242,21 @@ function showStageIntro() {
   $("#introModal").classList.remove("hidden");
 }
 
+function showGoalPreview() {
+  const stage = currentStage();
+  $("#goalPreviewList").innerHTML = stage.goals.map((goal, index) => `
+    <div class="goal-line"><i>${index + 1}</i><span>${goal}</span></div>
+  `).join("");
+  $("#goalPreviewTitle").textContent = `${state.stage + 1}단계 성공 조건`;
+  $("#goalPreviewModal").classList.remove("hidden");
+}
+
+function beginStageAfterPreview() {
+  $("#goalPreviewModal").classList.add("hidden");
+  startTimer();
+  tone(480, .08);
+}
+
 function setupStage() {
   const stage = currentStage();
   clearInterval(state.timerId);
@@ -775,7 +790,12 @@ function tone(frequency, duration) {
   } catch (_) { /* 소리를 지원하지 않는 환경에서는 조용히 진행한다. */ }
 }
 
-$("#startButton").addEventListener("click", () => { $("#introModal").classList.add("hidden"); startTimer(); tone(480, .08); });
+$("#startButton").addEventListener("click", () => {
+  $("#introModal").classList.add("hidden");
+  showGoalPreview();
+  clearTimeout(state.goalPreviewTimer);
+  state.goalPreviewTimer = setTimeout(beginStageAfterPreview, 2200);
+});
 $("#runButton").addEventListener("click", runMembrane);
 $("#resetButton").addEventListener("click", resetPlacement);
 $("#hintButton").addEventListener("click", showHint);
