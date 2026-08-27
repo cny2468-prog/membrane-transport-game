@@ -154,7 +154,7 @@ function generateCounts() {
       const oxygenLow = randomBetween([1, 3]);
       const glucoseLow = randomBetween([1, 3]);
       counts = {
-        sodium: { outside: 3, inside: 6 },
+        sodium: { outside: 9, inside: 6 },
         potassium: { outside: 6, inside: 3 },
         glucose: { outside: glucoseLow, inside: glucoseLow + randomBetween([3, 7]) },
         oxygen: { outside: oxygenLow + randomBetween([3, 7]), inside: oxygenLow }
@@ -737,8 +737,11 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   let detail = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div>`;
   if (move.tool === "simple") detail += particles;
   if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span>${particles.replaceAll("inset-oxygen", "inset-oxygen protein-cargo")}`;
-  if (move.tool === "endocytosis" || move.tool === "exocytosis") detail += `<span class="inset-vesicle"><i></i><b></b></span>`;
-  if (move.tool === "na-k-pump") detail += `<div class="pump-set"><span class="pump-set-title">한 세트</span><span class="inset-ion sodium-ion">Na⁺</span><span class="inset-ion sodium-ion">Na⁺</span><span class="inset-ion sodium-ion">Na⁺</span><span class="inset-ion potassium-ion">K⁺</span><span class="inset-ion potassium-ion">K⁺</span></div>`;
+  if (move.tool === "endocytosis" || move.tool === "exocytosis") {
+    const heads = Array.from({ length: 14 }, (_, index) => `<b style="--a:${index / 14 * 360}deg"></b>`).join("");
+    detail += `<span class="inset-vesicle"><span class="inset-vesicle-lipids">${heads}</span><i></i><b></b></span>`;
+  }
+  if (move.tool === "na-k-pump") detail += `<div class="pump-set"><span class="pump-set-title">한 세트</span><span class="inset-ion sodium-ion pump-out">Na⁺</span><span class="inset-ion sodium-ion pump-out">Na⁺</span><span class="inset-ion sodium-ion pump-out">Na⁺</span><span class="inset-ion potassium-ion pump-in">K⁺</span><span class="inset-ion potassium-ion pump-in">K⁺</span></div>`;
   inset.innerHTML = detail;
   inset.className = `membrane-inset transport-inset ${move.tool} ${move.from === "inside" ? "reverse" : ""}`;
   const width = Math.min(330, sceneRect.width * .64);

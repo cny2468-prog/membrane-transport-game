@@ -55,12 +55,14 @@
 @keyframes protein-cross-reverse{0%{left:49%;top:calc(100% + 5px)}45%{left:49%;top:52%}65%{left:48%;top:30%;transform:scale(.7)}100%{left:48%;top:-25px}}
 .inset-vesicle{position:absolute;z-index:4;left:8%;top:30%;width:66px;height:66px;border:5px solid #7b63a0;border-radius:50%;background:rgba(220,204,235,.36);animation:vesicle-cross 1.4s ease-in-out forwards;box-shadow:inset 0 0 10px rgba(123,99,160,.35)}
 .inset-vesicle i,.inset-vesicle b{position:absolute;border-radius:50%;background:#eea59b}.inset-vesicle i{width:13px;height:13px;left:16px;top:18px}.inset-vesicle b{width:10px;height:10px;right:14px;bottom:16px}
+.inset-vesicle-lipids{position:absolute;inset:-7px;border-radius:50%;pointer-events:none}.inset-vesicle-lipids b{position:absolute;width:8px;height:8px;margin:-4px;background:#ffe071;border:1px solid #785f21;border-radius:50%;left:calc(50% + cos(var(--a)) * 50%);top:calc(50% + sin(var(--a)) * 50%)}
 .exocytosis .inset-vesicle{animation-name:vesicle-fuse}.exocytosis.reverse .inset-vesicle{animation-name:vesicle-fuse}
 @keyframes vesicle-cross{0%{left:43%;top:-8px;transform:scale(.7)}42%{left:43%;top:27%;transform:scale(1)}62%{left:43%;top:48%;transform:scale(1.15)}100%{left:43%;top:calc(100% - 56px);transform:scale(.88)}}
 @keyframes vesicle-fuse{0%{left:43%;top:calc(100% - 56px);transform:scale(.88)}42%{left:43%;top:48%;transform:scale(1.15)}62%{left:43%;top:27%;transform:scale(1)}100%{left:43%;top:-8px;transform:scale(.7);opacity:.15}}
 .inset-pump{position:absolute;z-index:4;left:38%;top:40%;padding:10px 13px;border:4px solid #557f73;border-radius:45%;background:#b4d8c8;color:#285b50;font:bold 14px sans-serif;animation:pump-flash 1.2s ease-in-out 2}
 .inset-ion{position:absolute;z-index:5;left:48%;top:-25px;width:31px;height:31px;border-radius:50%;display:grid;place-items:center;font:bold 9px sans-serif;animation:ion-cross .8s ease-in-out forwards;box-shadow:0 0 0 3px rgba(255,255,255,.45)}
 .pump-set{position:absolute;inset:0;z-index:5}.pump-set-title{position:absolute;left:12px;bottom:8px;font:bold 10px sans-serif;color:#285b50}.pump-set .inset-ion{top:-25px;animation-name:ion-cross}.pump-set .inset-ion:nth-of-type(2){left:32%}.pump-set .inset-ion:nth-of-type(3){left:42%}.pump-set .inset-ion:nth-of-type(4){left:52%}.pump-set .inset-ion:nth-of-type(5){left:62%}.pump-set .inset-ion:nth-of-type(6){left:72%}
+.pump-set .pump-out{animation-name:ion-cross-reverse!important}.pump-set .pump-in{animation-name:ion-cross!important}
 .sodium-ion{background:#ffd2ca;border:3px solid #b64e43;color:#84382f}.potassium-ion{background:#d6efc2;border:3px solid #5c914e;color:#3e6e38}
 .membrane-inset.reverse .inset-ion{animation-name:ion-cross-reverse}
 @keyframes ion-cross{0%{left:48%;top:-25px}45%{left:48%;top:38%}100%{left:48%;top:calc(100% + 4px)}}
