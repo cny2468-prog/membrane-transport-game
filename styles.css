@@ -59,6 +59,11 @@
 @keyframes vesicle-cross{0%{left:43%;top:-8px;transform:scale(.7)}42%{left:43%;top:27%;transform:scale(1)}62%{left:43%;top:48%;transform:scale(1.15)}100%{left:43%;top:calc(100% - 56px);transform:scale(.88)}}
 @keyframes vesicle-fuse{0%{left:43%;top:calc(100% - 56px);transform:scale(.88)}42%{left:43%;top:48%;transform:scale(1.15)}62%{left:43%;top:27%;transform:scale(1)}100%{left:43%;top:-8px;transform:scale(.7);opacity:.15}}
 .inset-pump{position:absolute;z-index:4;left:38%;top:40%;padding:10px 13px;border:4px solid #557f73;border-radius:45%;background:#b4d8c8;color:#285b50;font:bold 14px sans-serif;animation:pump-flash 1.2s ease-in-out 2}
+.inset-ion{position:absolute;z-index:5;left:48%;top:-25px;width:31px;height:31px;border-radius:50%;display:grid;place-items:center;font:bold 9px sans-serif;animation:ion-cross .8s ease-in-out forwards;box-shadow:0 0 0 3px rgba(255,255,255,.45)}
+.sodium-ion{background:#ffd2ca;border:3px solid #b64e43;color:#84382f}.potassium-ion{background:#d6efc2;border:3px solid #5c914e;color:#3e6e38}
+.membrane-inset.reverse .inset-ion{animation-name:ion-cross-reverse}
+@keyframes ion-cross{0%{left:48%;top:-25px}45%{left:48%;top:38%}100%{left:48%;top:calc(100% + 4px)}}
+@keyframes ion-cross-reverse{0%{left:48%;top:calc(100% + 4px)}45%{left:48%;top:42%}100%{left:48%;top:-25px}}
 @keyframes pump-flash{50%{filter:brightness(1.35);box-shadow:0 0 18px #ffe17a;transform:scale(1.12)}}
 @keyframes membrane-pulse{50%{filter:brightness(1.28);box-shadow:0 0 0 4px #fff0a4,0 0 0 11px #3e9588,0 0 28px rgba(76,146,125,.6)}}
 

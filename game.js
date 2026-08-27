@@ -621,7 +621,7 @@ function animateTransport(moves) {
   const tasks = [];
   let timeline = 0;
   queues.forEach(queue => {
-    const travelTime = queue.move.tool === "simple" ? 1250 : queue.move.tool === "facilitated" ? 1500 : queue.move.tool === "na-k-pump" ? 1050 : 1750;
+    const travelTime = queue.move.tool === "simple" ? 600 : queue.move.tool === "facilitated" ? 700 : queue.move.tool === "na-k-pump" ? 450 : 900;
     queue.sources.forEach((source, index) => {
       tasks.push({ move: queue.move, source, index, sourceCount: queue.sources.length, delay: timeline, travelTime });
       timeline += travelTime + 320;
@@ -719,7 +719,7 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   if (move.tool === "simple") detail += particles;
   if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span>${particles.replaceAll("inset-oxygen", "inset-oxygen protein-cargo")}`;
   if (move.tool === "endocytosis" || move.tool === "exocytosis") detail += `<span class="inset-vesicle"><i></i><b></b></span>`;
-  if (move.tool === "na-k-pump") detail += `<span class="inset-pump">Na⁺ 3개 → 밖<br>K⁺ 2개 ← 안</span>`;
+  if (move.tool === "na-k-pump") detail += `<span class="inset-ion ${move.id === "sodium" ? "sodium-ion" : "potassium-ion"}">${move.id === "sodium" ? "Na⁺" : "K⁺"}</span>`;
   inset.innerHTML = detail;
   inset.className = `membrane-inset transport-inset ${move.tool} ${move.from === "inside" ? "reverse" : ""}`;
   const width = Math.min(330, sceneRect.width * .64);
@@ -728,7 +728,7 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   Object.assign(inset.style, { left: `${left}px`, top: `${top}px`, right: "auto", bottom: "auto", width: `${width}px` });
   inset.classList.remove("hidden");
   clearTimeout(showTransportInset.timer);
-  showTransportInset.timer = setTimeout(() => inset.classList.add("hidden"), 1550);
+  showTransportInset.timer = setTimeout(() => inset.classList.add("hidden"), 1050);
 }
 
 function animateATPUse(layer, sceneRect, moves) {
