@@ -651,13 +651,12 @@ function animateTransport(moves) {
       const gateX = gateCenterX - rect.width / 2;
       const gateY = gateCenterY - rect.height / 2;
       setTimeout(() => showTransportInset(move, gateX, gateY, sceneRect), delay);
-      const length = Math.hypot(targetX - startX, targetY - startY) || 1;
-      const unitX = (targetX - startX) / length;
-      const unitY = (targetY - startY) / length;
-      const entryX = gateX - unitX * 25;
-      const entryY = gateY - unitY * 25;
-      const exitX = gateX + unitX * 25;
-      const exitY = gateY + unitY * 25;
+      const outwardX = normalX * 30;
+      const outwardY = normalY * 30;
+      const entryX = gateX + (move.from === "outside" ? outwardX : -outwardX);
+      const entryY = gateY + (move.from === "outside" ? outwardY : -outwardY);
+      const exitX = gateX + (move.from === "outside" ? -outwardX : outwardX);
+      const exitY = gateY + (move.from === "outside" ? -outwardY : outwardY);
       Object.assign(clone.style, { left: `${startX}px`, top: `${startY}px`, width: `${rect.width}px`, height: `${rect.height}px`, transform: "none", opacity: "0" });
       layer.appendChild(clone);
       if (move.tool === "endocytosis" || move.tool === "exocytosis") {
@@ -676,7 +675,7 @@ function animateTransport(moves) {
       ];
       clone.animate(transportFrames, { duration: travelTime, delay, easing: "cubic-bezier(.45,.05,.2,1)", fill: "forwards" });
       if (device) setTimeout(() => device.animate([{ filter: "brightness(1)" }, { filter: "brightness(1.55) drop-shadow(0 0 7px #fff2a8)" }, { filter: "brightness(1)" }], { duration: 420 }), delay + 420);
-      if (move.tool === "simple" || move.tool === "facilitated") {
+      if (false) {
         const speedLabel = document.createElement("b");
         speedLabel.className = `transport-speed ${move.tool}`;
         setTimeout(() => { speedLabel.textContent = move.tool === "simple" ? "단순확산 · 인지질 이중층" : "촉진확산 · 막 단백질"; }, delay);
