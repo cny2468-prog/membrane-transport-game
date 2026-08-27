@@ -65,6 +65,30 @@ const stages = [
   }
 ];
 
+// 5단계 편성: 확산 2단계, 소낭 수송 1단계, 능동 수송 2단계
+const cloneStage = (source) => JSON.parse(JSON.stringify(source));
+const diffusionStage2 = cloneStage(stages[0]);
+diffusionStage2.kicker = "STAGE 02 · 확산 변형";
+diffusionStage2.title = "다른 농도 차이도 줄여라";
+diffusionStage2.time = 55;
+diffusionStage2.mission = "산소와 포도당의 새로운 농도 차이를 각각 1 이하로 줄이세요.";
+diffusionStage2.substances[0].outside = [8, 10]; diffusionStage2.substances[0].inside = [1, 2];
+diffusionStage2.substances[1].outside = [1, 2]; diffusionStage2.substances[1].inside = [8, 10];
+const vesicleStage = cloneStage(stages[1]);
+vesicleStage.kicker = "STAGE 03 · 소낭 수송";
+vesicleStage.time = 65;
+const pumpStage4 = cloneStage(stages[2]);
+pumpStage4.kicker = "STAGE 04 · 능동 수송 변형";
+pumpStage4.title = "새로운 이온 기울기를 만들어라";
+pumpStage4.time = 68;
+pumpStage4.substances[0].outside = [10, 10]; pumpStage4.substances[0].inside = [6, 6];
+pumpStage4.substances[1].outside = [2, 2]; pumpStage4.substances[1].inside = [7, 7];
+const pumpStage5 = cloneStage(stages[2]);
+pumpStage5.kicker = "STAGE 05 · 능동 수송 최종 라운드";
+pumpStage5.time = 75;
+const stagePlan = [stages[0], diffusionStage2, vesicleStage, pumpStage4, pumpStage5];
+stages.length = 0;
+stages.push(...stagePlan);
 const stageBriefs = [
   {
     kicker: "STAGE 01 · 확산", title: "1단계: 농도 차이를 줄여라",
@@ -89,6 +113,14 @@ const stageBriefs = [
   }
 ];
 
+stageBriefs.splice(1, 0, JSON.parse(JSON.stringify(stageBriefs[0])));
+stageBriefs.splice(2, 0, JSON.parse(JSON.stringify(stageBriefs[1])));
+stageBriefs.push(JSON.parse(JSON.stringify(stageBriefs[stageBriefs.length - 1])));
+stageBriefs[1].kicker = "STAGE 02 · 확산 변형";
+stageBriefs[2].kicker = "STAGE 03 · 소낭 수송";
+stageBriefs[3] = JSON.parse(JSON.stringify(stageBriefs[2])); stageBriefs[3].kicker = "STAGE 04 · 능동 수송 변형";
+stageBriefs[4] = JSON.parse(JSON.stringify(stageBriefs[2])); stageBriefs[4].kicker = "STAGE 05 · 능동 수송 최종 라운드";
+
 const missionVariants = [
   [
     "호흡에 필요한 산소와 포도당의 안팎 개수 차이를 각각 1 이하로 줄이세요.",
@@ -106,6 +138,12 @@ const missionVariants = [
     "Na⁺는 밖에, K⁺는 안에 더 많게 만들고 산소와 포도당은 고르게 분포시키세요."
   ]
 ];
+missionVariants.splice(1, 0, missionVariants[0].slice());
+missionVariants.splice(2, 0, missionVariants[1].slice());
+missionVariants.push(missionVariants[missionVariants.length - 1].slice());
+missionVariants[1] = ["새로운 산소·포도당 농도 차이를 각각 1 이하로 줄이세요."];
+missionVariants[3] = ["새 이온 분포에서 Na⁺는 밖 12개 이상, K⁺는 안 8개 이상으로 만드세요."];
+missionVariants[4] = ["ATP 펌프로 Na⁺ 3개를 밖으로, K⁺ 2개를 안으로 이동하세요."];
 
 const ENERGY_TOOLS = new Set(["endocytosis", "exocytosis", "na-k-pump"]);
 const DIFFUSION_VARIANTS = [
@@ -132,14 +170,14 @@ function generateCounts() {
   let key;
   let attempts = 0;
   do {
-    if (state.stage === 0) {
+    if (state.stage <= 1) {
       const oxygenLow = randomBetween([1, 3]);
       const glucoseLow = randomBetween([1, 3]);
       counts = {
         oxygen: { outside: oxygenLow + randomBetween([3, 7]), inside: oxygenLow },
         glucose: { outside: glucoseLow, inside: glucoseLow + randomBetween([3, 7]) }
       };
-    } else if (state.stage === 1) {
+    } else if (state.stage === 2) {
       const proteinLow = randomBetween([1, 3]);
       const wasteLow = randomBetween([1, 3]);
       const oxygenLow = randomBetween([1, 3]);
@@ -211,7 +249,7 @@ function updateEnergyStatus(mode = "ready") {
   panel.classList.toggle("connected", connected);
   panel.classList.toggle("using", mode === "using");
   panel.querySelector("b").textContent = mode === "using" ? "ATP 사용 중" : connected ? `ATP 장착 완료 ${bound.length}/${energyTools.length}` : placed.length ? `ATP를 장치에 끌어다 놓으세요 ${bound.length}/${energyTools.length}` : "에너지가 필요한 장치를 먼저 놓으세요";
-  panel.querySelector("small").textContent = mode === "using" ? "ATP → ADP + Pi" : state.stage === 1 ? "세포내 유입·세포외 유출에 각각 결합" : "Na⁺/K⁺ 펌프에 직접 결합";
+  panel.querySelector("small").textContent = mode === "using" ? "ATP → ADP + Pi" : state.stage === 2 ? "세포내 유입·세포외 유출에 각각 결합" : "Na⁺/K⁺ 펌프에 직접 결합";
 }
 
 function renderMembraneStructure() {
@@ -277,7 +315,7 @@ function setupStage() {
   state.stageScore = 0;
   state.atpBindings = {};
   state.activeMission = chooseMission();
-  if (state.stage === 2) state.activeMission = "펌프로 Na⁺ 3개를 밖으로, K⁺ 2개를 안으로 이동해 Na⁺는 밖 12개 이상, K⁺는 안 8개 이상으로 만드세요.";
+  if (state.stage >= 3) state.activeMission = "펌프로 Na⁺ 3개를 밖으로, K⁺ 2개를 안으로 이동해 Na⁺는 밖 12개 이상, K⁺는 안 8개 이상으로 만드세요.";
   $("#runButton").disabled = false;
   state.counts = generateCounts();
   state.budget = calculateBudget();
@@ -446,7 +484,7 @@ function refreshPlacements() {
 
 function changeCycles(slotId, change) {
   if (state.running) return;
-  if (state.stage === 2 && state.placements[slotId] === "na-k-pump" && change > 0 && state.cycles[slotId] >= 2) {
+  if (state.stage >= 3 && state.placements[slotId] === "na-k-pump" && change > 0 && state.cycles[slotId] >= 2) {
     showToast("준비된 ATP가 2개라서 펌프는 2번까지 작동합니다.");
     return;
   }
@@ -468,8 +506,8 @@ function renderCounts(changed = false) {
 }
 
 function goalChecks() {
-  if (state.stage === 0) return ["oxygen", "glucose"].map(id => Math.abs(state.counts[id].outside - state.counts[id].inside) <= 1);
-  if (state.stage === 1) return [state.counts.protein.inside > state.counts.protein.outside, state.counts.waste.outside > state.counts.waste.inside, Math.abs(state.counts.oxygen.outside - state.counts.oxygen.inside) <= 1];
+  if (state.stage <= 1) return ["oxygen", "glucose"].map(id => Math.abs(state.counts[id].outside - state.counts[id].inside) <= 1);
+  if (state.stage === 2) return [state.counts.protein.inside > state.counts.protein.outside, state.counts.waste.outside > state.counts.waste.inside, Math.abs(state.counts.oxygen.outside - state.counts.oxygen.inside) <= 1];
   return [state.counts.sodium.outside >= 12, state.counts.potassium.inside >= 8, Math.abs(state.counts.oxygen.outside - state.counts.oxygen.inside) <= 1, Math.abs(state.counts.glucose.outside - state.counts.glucose.inside) <= 1];
 }
 
@@ -477,9 +515,9 @@ function renderGoals() {
   const checks = goalChecks();
   const diffusionLabel = state.diffusionName || "산소 (O₂)";
   const goals = currentStage().goals.map((goal, index) => {
-    if (state.stage === 2 && index === 0) return "Na⁺: 세포 밖 9개 → 12개 이상";
-    if (state.stage === 2 && index === 1) return "K⁺: 세포 안 6개 → 8개 이상";
-    const diffusionGoal = (state.stage === 0 && index === 1) || (state.stage === 1 && index === 2) || (state.stage === 2 && index === 2);
+    if (state.stage >= 3 && index === 0) return "Na⁺: 세포 밖 9개 → 12개 이상";
+    if (state.stage >= 3 && index === 1) return "K⁺: 세포 안 6개 → 8개 이상";
+    const diffusionGoal = (state.stage <= 1 && index === 1) || (state.stage === 2 && index === 2) || (state.stage >= 3 && index >= 2);
     return diffusionGoal ? `${diffusionLabel}: 세포 안팎 개수 차이 1 이하` : goal;
   });
   $("#goalList").innerHTML = goals.map((goal, index) => `<div class="goal-line ${checks[index] ? "done" : ""}"><i>${checks[index] ? "✓" : ""}</i><span>${goal}</span></div>`).join("");
@@ -718,7 +756,7 @@ function animateTransport(moves) {
         speedLabel.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "translateY(0)", offset: .25 }, { opacity: 1, offset: .75 }, { opacity: 0, transform: "translateY(-5px)" }], { duration: travelTime, delay, fill: "forwards" });
         setTimeout(() => speedLabel.remove(), delay + travelTime + 80);
       }
-      if (state.stage === 1) animateVesicleProcess({ layer, clone, move, startX, startY, entryX, entryY, gateX, gateY, exitX, exitY, targetX, targetY, rect, delay, duration: travelTime });
+      if (state.stage === 2) animateVesicleProcess({ layer, clone, move, startX, startY, entryX, entryY, gateX, gateY, exitX, exitY, targetX, targetY, rect, delay, duration: travelTime });
       setTimeout(() => clone.remove(), travelTime + delay + 100);
   });
   return Math.max(0, timeline - 130);
