@@ -790,7 +790,11 @@ function animateVesicleProcess(data) {
   const { layer, move, startX, startY, entryX, entryY, gateX, gateY, exitX, exitY, targetX, targetY, rect, delay, duration } = data;
   const shell = document.createElement("span");
   shell.className = `vesicle-shell ${move.from === "inside" ? "exocytosis" : "endocytosis"}`;
-  shell.innerHTML = `<i></i><i></i><i></i>`;
+  const lipidHeads = Array.from({ length: 20 }, (_, index) => {
+    const angle = index / 20 * Math.PI * 2;
+    return `<b style="left:${50 + Math.cos(angle) * 43}%;top:${50 + Math.sin(angle) * 43}%"></b>`;
+  }).join("");
+  shell.innerHTML = `<span class="vesicle-lipid-ring">${lipidHeads}</span><i></i><i></i><i></i>`;
   Object.assign(shell.style, { left: `${startX - 7}px`, top: `${startY - 7}px`, width: `${rect.width + 14}px`, height: `${rect.height + 14}px`, opacity: "0" });
   layer.appendChild(shell);
   const path = [
