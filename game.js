@@ -620,7 +620,23 @@ function animateTransport(moves) {
   });
   const tasks = [];
   let timeline = 0;
-  queues.forEach(queue => {
+  const pumpQueues = queues.filter(queue => queue.move.tool === "na-k-pump");
+  const regularQueues = queues.filter(queue => queue.move.tool !== "na-k-pump");
+  if (pumpQueues.length) {
+    const sodiumQueue = pumpQueues.find(queue => queue.move.id === "sodium");
+    const potassiumQueue = pumpQueues.find(queue => queue.move.id === "potassium");
+    const sets = Math.max(0, Math.min(
+      sodiumQueue ? Math.floor(sodiumQueue.sources.length / 3) : 0,
+      potassiumQueue ? Math.floor(potassiumQueue.sources.length / 2) : 0
+    ));
+    for (let set = 0; set < sets; set += 1) {
+      const setDelay = timeline;
+      if (sodiumQueue) sodiumQueue.sources.slice(set * 3, set * 3 + 3).forEach((source, index) => tasks.push({ move: sodiumQueue.move, source, index, sourceCount: 3, delay: setDelay, travelTime: 650 }));
+      if (potassiumQueue) potassiumQueue.sources.slice(set * 2, set * 2 + 2).forEach((source, index) => tasks.push({ move: potassiumQueue.move, source, index, sourceCount: 2, delay: setDelay, travelTime: 650 }));
+      timeline += 650 + 260;
+    }
+  }
+  regularQueues.forEach(queue => {
     const travelTime = queue.move.tool === "simple" ? 600 : queue.move.tool === "facilitated" ? 700 : queue.move.tool === "na-k-pump" ? 450 : 900;
     queue.sources.forEach((source, index) => {
       tasks.push({ move: queue.move, source, index, sourceCount: queue.sources.length, delay: timeline, travelTime });
