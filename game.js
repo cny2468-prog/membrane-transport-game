@@ -542,6 +542,7 @@ function makeParticles(container, item, count, inside, groupIndex) {
 }
 
 function particleGlyph(id, short) {
+  if (id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide") return `<i></i><i></i><i></i><b>C</b>`;
   if (id === "oxygen") return state.simpleDiffusionId === "carbon-dioxide" ? `<i></i><i></i><b>C</b>` : `<i></i><i></i><b>O₂</b>`;
   if (id === "glucose") return `<b>G</b>`;
   if (id === "protein") return `<i></i><i></i><i></i><b>P</b>`;
@@ -726,7 +727,7 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   Object.assign(inset.style, { left: `${left}px`, top: `${top}px`, right: "auto", bottom: "auto", width: `${width}px` });
   inset.classList.remove("hidden");
   clearTimeout(showTransportInset.timer);
-  showTransportInset.timer = setTimeout(() => inset.classList.add("hidden"), 1900);
+  showTransportInset.timer = setTimeout(() => inset.classList.add("hidden"), 1550);
 }
 
 function animateATPUse(layer, sceneRect, moves) {
