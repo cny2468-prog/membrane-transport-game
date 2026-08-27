@@ -74,6 +74,7 @@ diffusionStage2.time = 55;
 diffusionStage2.mission = "산소와 포도당의 새로운 농도 차이를 각각 1 이하로 줄이세요.";
 diffusionStage2.substances[0].outside = [8, 10]; diffusionStage2.substances[0].inside = [1, 2];
 diffusionStage2.substances[1].outside = [1, 2]; diffusionStage2.substances[1].inside = [8, 10];
+diffusionStage2.goals = ["이산화탄소 (CO₂): 안팎의 개수 차이 1 이하", "포도당: 안팎의 개수 차이 1 이하"];
 const vesicleStage = cloneStage(stages[1]);
 vesicleStage.kicker = "STAGE 03 · 소낭 수송";
 vesicleStage.time = 65;
@@ -170,7 +171,9 @@ function generateCounts() {
   let key;
   let attempts = 0;
   do {
-    if (state.stage <= 1) {
+    if (state.stage === 1) {
+      counts = { oxygen: { outside: 9, inside: 3 }, glucose: { outside: 3, inside: 10 } };
+    } else if (state.stage === 0) {
       const oxygenLow = randomBetween([1, 3]);
       const glucoseLow = randomBetween([1, 3]);
       counts = {
