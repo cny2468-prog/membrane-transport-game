@@ -591,7 +591,7 @@ function runMembrane() {
   tone(440, .08); setTimeout(() => tone(660, .12), 110);
   setTimeout(() => {
     renderCounts(true); renderParticles(); renderGoals(); refreshPlacements();
-    document.querySelector(".cell-body").classList.remove("transporting");
+    document.querySelector(".cell-body").classList.remove("transporting", "detail-zoom");
     const cleared = goalChecks().every(Boolean);
     if (cleared) {
       clearInterval(state.timerId);
@@ -641,6 +641,7 @@ function animateTransport(moves) {
         targetY = sceneRect.height * (.18 + (index % 3) * .28);
       }
       const device = document.querySelector(`.drop-slot[data-slot="${move.slot}"] .installed-device`);
+      const slot = document.querySelector(`.drop-slot[data-slot="${move.slot}"]`);
       const deviceRect = device ? device.getBoundingClientRect() : cellRect;
       const gateX = deviceRect.left - sceneRect.left + deviceRect.width / 2 - rect.width / 2;
       const gateY = deviceRect.top - sceneRect.top + deviceRect.height / 2 - rect.height / 2;
@@ -653,6 +654,11 @@ function animateTransport(moves) {
       const exitY = gateY + unitY * 25;
       Object.assign(clone.style, { left: `${startX}px`, top: `${startY}px`, width: `${rect.width}px`, height: `${rect.height}px`, transform: "none", opacity: "0" });
       layer.appendChild(clone);
+      if (move.tool === "endocytosis" || move.tool === "exocytosis") {
+        document.querySelector(".cell-body").classList.add("detail-zoom");
+        slot?.classList.add("focus-transport");
+        setTimeout(() => slot?.classList.remove("focus-transport"), delay + travelTime + 180);
+      }
       setTimeout(() => { source.style.opacity = "0"; tone(430 + taskIndex * 16, .045); }, delay);
       const transportFrames = [
         { left: `${startX}px`, top: `${startY}px`, transform: "scale(1)", opacity: 1, offset: 0 },
@@ -730,13 +736,21 @@ function animateVesicleProcess(data) {
     { left: `${targetX - 7}px`, top: `${targetY - 7}px`, opacity: move.from === "inside" ? 0 : 1, transform: "scale(.9)", offset: 1 }
   ];
   shell.animate(path, { duration, delay, easing: "cubic-bezier(.45,.05,.2,1)", fill: "forwards" });
+  const caption = document.createElement("b");
+  caption.className = "vesicle-caption";
+  caption.textContent = move.from === "outside"
+    ? "세포내 유입 · 소낭이 물질을 감싸 안으로 들어옵니다"
+    : "세포외 유출 · 소낭이 막과 융합해 물질을 밖으로 내보냅니다";
+  Object.assign(caption.style, { left: `${gateX - 82}px`, top: `${gateY - 70}px` });
+  layer.appendChild(caption);
+  caption.animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "translateY(0)", offset: .2 }, { opacity: 1, offset: .78 }, { opacity: 0, transform: "translateY(-5px)" }], { duration: Math.min(duration, 2200), delay: delay + 160, fill: "forwards" });
   const fusion = document.createElement("span");
   fusion.className = "fusion-effect";
-  fusion.innerHTML = `<i></i><b>${move.from === "inside" ? "소낭막과 세포막 융합" : "막이 감싸 소낭 형성"}</b>`;
+  fusion.innerHTML = `<i></i><b>${move.from === "inside" ? "소낭-세포막 융합" : "막이 물질을 감싸 소낭 형성"}</b>`;
   Object.assign(fusion.style, { left: `${gateX}px`, top: `${gateY}px` });
   layer.appendChild(fusion);
   fusion.animate([{ opacity: 0, transform: "scale(.4)" }, { opacity: 1, transform: "scale(1)", offset: .35 }, { opacity: 1, transform: "scale(1.08)", offset: .7 }, { opacity: 0, transform: "scale(1.35)" }], { duration: 720, delay: delay + duration * .35, fill: "forwards" });
-  setTimeout(() => { shell.remove(); fusion.remove(); }, duration + delay + 120);
+  setTimeout(() => { shell.remove(); fusion.remove(); caption.remove(); }, duration + delay + 180);
 }
 
 function timeUp() {

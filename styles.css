@@ -23,6 +23,9 @@
 .cell-body.transporting{animation:cell-zoom 1.1s ease-in-out both}
 .cell-body.transporting .membrane{animation:membrane-pulse .55s ease-in-out 2}
 @keyframes cell-zoom{0%{transform:translate(-50%,-50%) scale(1)}45%{transform:translate(-50%,-50%) scale(1.12)}100%{transform:translate(-50%,-50%) scale(1.04)}}
+.cell-body.detail-zoom{animation:detail-zoom 2.2s ease-in-out both}
+.drop-slot.focus-transport{z-index:12;filter:drop-shadow(0 0 12px #ffe58a)}
+@keyframes detail-zoom{0%{transform:translate(-50%,-50%) scale(1)}35%{transform:translate(-50%,-50%) scale(1.2)}72%{transform:translate(-50%,-50%) scale(1.2)}100%{transform:translate(-50%,-50%) scale(1.04)}}
 @keyframes membrane-pulse{50%{filter:brightness(1.28);box-shadow:0 0 0 4px #fff0a4,0 0 0 11px #3e9588,0 0 28px rgba(76,146,125,.6)}}
 
 /* 입자별 모양 */
@@ -159,6 +162,7 @@
 .fusion-effect{position:absolute;z-index:34;width:94px;height:94px;margin:-38px 0 0 -38px;display:grid;place-items:center;pointer-events:none;opacity:0}
 .fusion-effect i{position:absolute;inset:18px;border:5px dashed #f0c457;border-radius:50%;box-shadow:0 0 0 6px rgba(255,238,161,.32)}
 .fusion-effect b{position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:max-content;max-width:140px;background:#173a3f;color:white;padding:4px 7px;font:bold 9px sans-serif;box-shadow:0 2px 5px rgba(23,58,63,.25)}
+.vesicle-caption{position:absolute;z-index:42;width:max-content;max-width:180px;padding:6px 9px;background:#173a3f;color:#fff;border-left:3px solid #f0c457;font:bold 11px/1.35 sans-serif;pointer-events:none;opacity:0;box-shadow:0 3px 8px rgba(23,58,63,.25)}
 .transport-speed{position:absolute;z-index:36;width:max-content;padding:4px 7px;background:#173a3f;color:#fff;font:bold 9px sans-serif;pointer-events:none;opacity:0;box-shadow:0 2px 5px rgba(23,58,63,.24)}
 .transport-speed.simple{background:#347c96}.transport-speed.facilitated{background:#9c6927}
 .atp-transfer{position:absolute;z-index:40;width:36px;height:36px;display:grid;place-items:center;clip-path:polygon(50% 0,61% 31%,95% 20%,75% 50%,96% 78%,62% 69%,50% 100%,38% 69%,4% 78%,25% 50%,5% 20%,39% 31%);background:#ffd34f;color:#573b0d;font:bold 8px sans-serif;filter:drop-shadow(0 2px 4px rgba(94,64,13,.35));pointer-events:none}.atp-reaction{position:absolute;z-index:41;width:max-content;padding:4px 7px;background:#8f641b;color:#fff;font:bold 9px sans-serif;pointer-events:none;opacity:0}
