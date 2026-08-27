@@ -3,6 +3,11 @@
 @media(max-width:1050px){.game-layout{grid-template-columns:230px 1fr}.status-panel{grid-column:1/-1;min-height:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px}.status-panel .panel-head{grid-column:1/-1}.count-head,.count-list{grid-column:1}.goal-box{grid-column:2;grid-row:2/4;margin-top:14px}.run-button{grid-column:2}.reset-button{grid-column:2}.cell-workbench{min-height:590px}}
 @media(max-width:720px){.topbar{height:62px}.sound-button{display:none}.stage-track i{width:24px}.mission-bar{grid-template-columns:1fr auto;padding:16px 4vw;gap:10px}.mission-bar h1{font-size:23px}.mission-center{grid-column:1/-1;grid-row:2;padding:10px 0 0;border-left:0;border-top:1px solid rgba(255,255,255,.2)}.timer-wrap{grid-column:2;grid-row:1}.game-layout{display:flex;flex-direction:column;width:94vw}.inventory-panel{min-height:auto}.tool-list{grid-template-columns:1fr 1fr}.cell-workbench{min-height:520px;order:2}.status-panel{order:3;display:block}.panel{min-height:auto}.cell-body{width:72%}.drop-slot{width:105px}.drop-slot:nth-child(2){right:-20px}.modal-card{padding:28px 24px}.modal-card h2{font-size:29px}}
 @media(max-width:460px){.brand strong{font-size:19px}.brand-mark{width:35px;height:35px}.stage-track span{width:25px;height:25px}.mission-bar h1{font-size:21px}.tool-list{grid-template-columns:1fr}.cell-workbench{min-height:480px}.cell-body{width:76%}.drop-slot{min-height:48px;width:94px}.drop-slot:nth-child(2){right:-28px}.particle{width:15px;height:15px}.legend{gap:8px}.modal-card h2{font-size:26px}}
+
+/* 현미경 일러스트처럼 입체적인 막 실험 무대 */
+.cell-workbench{background:radial-gradient(circle at 50% 8%,#e4f9ff 0,#9cd5e7 34%,#518fa7 100%)!important;border-color:#2f6b78!important;box-shadow:inset 0 0 90px rgba(18,77,97,.32),inset 0 0 0 7px rgba(255,255,255,.25)!important}
+.cell-body{width:min(470px,72%)!important;aspect-ratio:1!important;border-radius:50%!important}
+.membrane-outer{border-color:rgba(235,180,55,.62)!important;box-shadow:0 0 0 2px #355f58,0 0 0 17px rgba(255,227,128,.3),0 0 0 19px #355f58,0 12px 35px rgba(23,58,63,.3)!important}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 /* 물질과 세포 구역을 한눈에 구분하는 실험 화면 */
