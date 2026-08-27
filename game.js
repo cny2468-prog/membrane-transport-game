@@ -697,7 +697,7 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   const label = move.id === "glucose" ? "포도당" : move.id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : move.id === "protein" ? "단백질" : move.id === "waste" ? "노폐물" : "O₂";
   let detail = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div>`;
   if (move.tool === "simple") detail += `<span class="inset-oxygen">${label}</span>`;
-  if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span><span class="inset-oxygen protein-cargo">${label}</span>`;
+  if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span><span class="inset-oxygen protein-cargo ${move.id === "glucose" ? "inset-glucose" : ""}">${label}</span>`;
   if (move.tool === "endocytosis" || move.tool === "exocytosis") detail += `<span class="inset-vesicle"><i></i><b></b></span>`;
   if (move.tool === "na-k-pump") detail += `<span class="inset-pump">Na⁺ 3  ⇄  K⁺ 2</span>`;
   inset.innerHTML = detail;
