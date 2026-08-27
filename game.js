@@ -59,7 +59,7 @@ const stages = [
       { id: "potassium-channel", name: "칼륨 통로", sub: "농도 기울기 방향", icon: "K", color: "#6e9f58" }
     ],
     goals: ["나트륨 이온: 세포 밖 > 세포 안", "칼륨 이온: 세포 안 > 세포 밖", "산소: 안팎의 개수 차이 1 이하", "포도당: 안팎의 개수 차이 1 이하"],
-    moves: [{ id: "sodium", tool: "na-k-pump", from: "outside", perCycle: 3 }, { id: "potassium", tool: "na-k-pump", from: "inside", perCycle: 2 }, { id: "oxygen", tool: "simple", from: "outside", perCycle: 1 }, { id: "glucose", tool: "facilitated", from: "inside", perCycle: 1 }],
+    moves: [{ id: "sodium", tool: "na-k-pump", from: "inside", perCycle: 3 }, { id: "potassium", tool: "na-k-pump", from: "outside", perCycle: 2 }, { id: "oxygen", tool: "simple", from: "outside", perCycle: 1 }, { id: "glucose", tool: "facilitated", from: "inside", perCycle: 1 }],
     hint: "이온 통로는 농도 기울기를 거스르지 못합니다. 펌프와 ATP를 함께 써야 해요.",
     fact: "나트륨-칼륨 펌프는 ATP를 써서 한 번에 Na⁺ 3개를 밖으로, K⁺ 2개를 안으로 옮깁니다. 산소와 포도당의 확산에는 ATP가 필요하지 않습니다."
   }
@@ -154,8 +154,8 @@ function generateCounts() {
       const oxygenLow = randomBetween([1, 3]);
       const glucoseLow = randomBetween([1, 3]);
       counts = {
-        sodium: { outside: sodiumLow + randomBetween([7, 9]), inside: sodiumLow },
-        potassium: { outside: potassiumLow, inside: potassiumLow + randomBetween([5, 7]) },
+        sodium: { outside: 3, inside: 6 },
+        potassium: { outside: 6, inside: 3 },
         glucose: { outside: glucoseLow, inside: glucoseLow + randomBetween([3, 7]) },
         oxygen: { outside: oxygenLow + randomBetween([3, 7]), inside: oxygenLow }
       };
@@ -736,7 +736,7 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   if (move.tool === "simple") detail += particles;
   if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span>${particles.replaceAll("inset-oxygen", "inset-oxygen protein-cargo")}`;
   if (move.tool === "endocytosis" || move.tool === "exocytosis") detail += `<span class="inset-vesicle"><i></i><b></b></span>`;
-  if (move.tool === "na-k-pump") detail += `<span class="inset-ion ${move.id === "sodium" ? "sodium-ion" : "potassium-ion"}">${move.id === "sodium" ? "Na⁺" : "K⁺"}</span>`;
+  if (move.tool === "na-k-pump") detail += `<div class="pump-set"><span class="pump-set-title">한 세트</span><span class="inset-ion sodium-ion">Na⁺</span><span class="inset-ion sodium-ion">Na⁺</span><span class="inset-ion sodium-ion">Na⁺</span><span class="inset-ion potassium-ion">K⁺</span><span class="inset-ion potassium-ion">K⁺</span></div>`;
   inset.innerHTML = detail;
   inset.className = `membrane-inset transport-inset ${move.tool} ${move.from === "inside" ? "reverse" : ""}`;
   const width = Math.min(330, sceneRect.width * .64);
