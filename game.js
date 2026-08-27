@@ -628,6 +628,7 @@ function animateTransport(moves) {
       const rect = source.getBoundingClientRect();
       const clone = source.cloneNode(true);
       clone.classList.add("transport-particle");
+      clone.dataset.molecule = move.id;
       const startX = rect.left - sceneRect.left;
       const startY = rect.top - sceneRect.top;
       let targetX;
@@ -646,10 +647,15 @@ function animateTransport(moves) {
       const distance = Math.hypot(dx, dy) || 1;
       const normalX = dx / distance;
       const normalY = dy / distance;
-      targetX = gateCenterX + (move.from === "outside" ? -normalX * inwardLength : normalX * outwardLength) - rect.width / 2;
-      targetY = gateCenterY + (move.from === "outside" ? -normalY * inwardLength : normalY * outwardLength) - rect.height / 2;
-      const gateX = gateCenterX - rect.width / 2;
-      const gateY = gateCenterY - rect.height / 2;
+      const spread = (index - (queue.sources.length - 1) / 2) * 24;
+      const tangentX = -normalY;
+      const tangentY = normalX;
+      const laneGateX = gateCenterX + tangentX * spread;
+      const laneGateY = gateCenterY + tangentY * spread;
+      targetX = laneGateX + (move.from === "outside" ? -normalX * inwardLength : normalX * outwardLength) - rect.width / 2;
+      targetY = laneGateY + (move.from === "outside" ? -normalY * inwardLength : normalY * outwardLength) - rect.height / 2;
+      const gateX = laneGateX - rect.width / 2;
+      const gateY = laneGateY - rect.height / 2;
       setTimeout(() => showTransportInset(move, gateX, gateY, sceneRect), delay);
       const outwardX = normalX * 30;
       const outwardY = normalY * 30;
