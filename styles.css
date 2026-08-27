@@ -29,6 +29,7 @@
 .membrane-inset{position:absolute;z-index:45;right:18px;bottom:18px;width:min(410px,72%);height:190px;padding:12px 14px;border:3px solid #295c62;border-radius:12px;background:linear-gradient(180deg,#c9e6f1 0 26%,#fff6ae 27% 73%,#c9e6f1 74%);box-shadow:0 12px 25px rgba(15,53,59,.3),0 0 0 5px rgba(255,255,255,.6);overflow:hidden;transform-origin:center;animation:inset-pop .45s ease-out both}
 .membrane-inset.hidden{display:none}
 .membrane-inset:before{content:"MEMBRANE DETAIL  ×3";position:absolute;top:7px;left:12px;z-index:3;font:bold 9px sans-serif;letter-spacing:.12em;color:#28565a}
+.inset-direction{position:absolute;right:12px;top:7px;z-index:3;font:bold 9px sans-serif;color:#28565a}
 .bilayer-row{position:absolute;left:12px;right:12px;height:58px;display:flex;justify-content:space-around;align-items:center}
 .bilayer-row.outer{top:30px}.bilayer-row.inner{bottom:30px;transform:rotate(180deg)}
 .lipid-unit{position:relative;width:20px;height:52px;display:block}
@@ -40,6 +41,18 @@
 @keyframes oxygen-cross{0%{left:-28px;top:47%}35%{left:34%;top:47%}58%{left:52%;top:53%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:calc(100% + 4px);top:49%;transform:scale(1)}}
 @keyframes oxygen-cross-reverse{0%{left:calc(100% + 4px);top:49%}35%{left:58%;top:49%}58%{left:39%;top:53%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:-28px;top:47%;transform:scale(1)}}
 @keyframes inset-pop{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:scale(1)}}
+.inset-protein{position:absolute;z-index:3;left:46%;top:26%;width:32px;height:98px;background:#7663ae;border:3px solid #50418c;border-radius:45% 55% 48% 52%;box-shadow:inset 0 0 0 6px rgba(255,255,255,.22)}
+.inset-protein i{position:absolute;left:12px;top:5px;width:4px;height:82px;background:#fff;border-radius:4px}.inset-protein b{position:absolute;left:8px;top:31px;width:12px;height:22px;border-radius:50%;background:#ffd66d}
+.protein-cargo{animation:protein-cross 2.2s ease-in-out forwards}.facilitated.reverse .protein-cargo{animation-name:protein-cross-reverse}
+@keyframes protein-cross{0%{left:-25px;top:49%}45%{left:42%;top:49%}65%{left:51%;top:49%;transform:scale(.7)}100%{left:calc(100% + 5px);top:49%}}
+@keyframes protein-cross-reverse{0%{left:calc(100% + 5px);top:49%}45%{left:52%;top:49%}65%{left:42%;top:49%;transform:scale(.7)}100%{left:-25px;top:49%}}
+.inset-vesicle{position:absolute;z-index:4;left:8%;top:30%;width:66px;height:66px;border:5px solid #7b63a0;border-radius:50%;background:rgba(220,204,235,.36);animation:vesicle-cross 2.2s ease-in-out forwards;box-shadow:inset 0 0 10px rgba(123,99,160,.35)}
+.inset-vesicle i,.inset-vesicle b{position:absolute;border-radius:50%;background:#eea59b}.inset-vesicle i{width:13px;height:13px;left:16px;top:18px}.inset-vesicle b{width:10px;height:10px;right:14px;bottom:16px}
+.exocytosis .inset-vesicle{animation-name:vesicle-fuse}.exocytosis.reverse .inset-vesicle{animation-name:vesicle-fuse}
+@keyframes vesicle-cross{0%{left:5%;top:32%;transform:scale(.7)}42%{left:42%;top:32%;transform:scale(1)}62%{left:53%;top:32%;transform:scale(1.15)}100%{left:70%;top:32%;transform:scale(.88)}}
+@keyframes vesicle-fuse{0%{left:70%;top:32%;transform:scale(.88)}42%{left:53%;top:32%;transform:scale(1.15)}62%{left:42%;top:32%;transform:scale(1)}100%{left:5%;top:32%;transform:scale(.7);opacity:.15}}
+.inset-pump{position:absolute;z-index:4;left:31%;top:41%;padding:10px 13px;border:4px solid #557f73;border-radius:45%;background:#b4d8c8;color:#285b50;font:bold 14px sans-serif;animation:pump-flash 1.2s ease-in-out 2}
+@keyframes pump-flash{50%{filter:brightness(1.35);box-shadow:0 0 18px #ffe17a;transform:scale(1.12)}}
 @keyframes membrane-pulse{50%{filter:brightness(1.28);box-shadow:0 0 0 4px #fff0a4,0 0 0 11px #3e9588,0 0 28px rgba(76,146,125,.6)}}
 
 /* 입자별 모양 */

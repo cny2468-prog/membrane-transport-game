@@ -609,8 +609,6 @@ function animateTransport(moves) {
   const sceneRect = scene.getBoundingClientRect();
   const cellRect = document.querySelector(".cell-body").getBoundingClientRect();
   document.querySelector(".cell-body").classList.add("transporting");
-  const simpleMove = moves.find(move => move.tool === "simple");
-  if (simpleMove) showMembraneInset(simpleMove, sceneRect);
   if (moves.some(move => ENERGY_TOOLS.has(move.tool))) animateATPUse(layer, sceneRect, moves);
   const queues = moves.map(move => {
     const sourceId = move.from === "outside" ? "#outsideParticles" : "#insideParticles";
@@ -647,6 +645,7 @@ function animateTransport(moves) {
       const deviceRect = device ? device.getBoundingClientRect() : cellRect;
       const gateX = deviceRect.left - sceneRect.left + deviceRect.width / 2 - rect.width / 2;
       const gateY = deviceRect.top - sceneRect.top + deviceRect.height / 2 - rect.height / 2;
+      setTimeout(() => showTransportInset(move, gateX, gateY, sceneRect), delay);
       const length = Math.hypot(targetX - startX, targetY - startY) || 1;
       const unitX = (targetX - startX) / length;
       const unitY = (targetY - startY) / length;
@@ -688,15 +687,25 @@ function animateTransport(moves) {
   return Math.max(0, timeline - 130);
 }
 
-function showMembraneInset(move, sceneRect) {
+function showTransportInset(move, gateX, gateY, sceneRect) {
   const inset = $("#membraneInset");
   const units = Array.from({ length: 13 }, () => `<span class="lipid-unit"><b></b><i></i><i></i></span>`).join("");
   const label = state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : "O₂";
-  inset.innerHTML = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div><span class="inset-oxygen">${label}</span>`;
-  inset.classList.toggle("reverse", move.from === "inside");
+  const direction = move.from === "outside" ? "outside→inside" : "inside→outside";
+  let detail = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div>`;
+  if (move.tool === "simple") detail += `<span class="inset-oxygen">${label}</span>`;
+  if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span><span class="inset-oxygen protein-cargo">${label}</span>`;
+  if (move.tool === "endocytosis" || move.tool === "exocytosis") detail += `<span class="inset-vesicle"><i></i><b></b></span>`;
+  if (move.tool === "na-k-pump") detail += `<span class="inset-pump">Na⁺ 3  ⇄  K⁺ 2</span>`;
+  inset.innerHTML = `<small class="inset-direction">${direction}</small>${detail}`;
+  inset.className = `membrane-inset transport-inset ${move.tool} ${move.from === "inside" ? "reverse" : ""}`;
+  const width = Math.min(330, sceneRect.width * .64);
+  const left = Math.max(8, Math.min(sceneRect.width - width - 8, gateX - width / 2));
+  const top = Math.max(8, Math.min(sceneRect.height - 168, gateY - 84));
+  Object.assign(inset.style, { left: `${left}px`, top: `${top}px`, right: "auto", bottom: "auto", width: `${width}px` });
   inset.classList.remove("hidden");
-  clearTimeout(showMembraneInset.timer);
-  showMembraneInset.timer = setTimeout(() => inset.classList.add("hidden"), Math.max(2600, sceneRect ? 2800 : 2600));
+  clearTimeout(showTransportInset.timer);
+  showTransportInset.timer = setTimeout(() => inset.classList.add("hidden"), 2200);
 }
 
 function animateATPUse(layer, sceneRect, moves) {
