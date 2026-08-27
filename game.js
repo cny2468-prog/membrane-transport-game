@@ -44,8 +44,8 @@ const stages = [
     kicker: "STAGE 03 · 능동 수송", title: "농도 기울기를 거슬러라", time: 75,
     mission: "Na⁺·K⁺ 분포를 회복하고 산소와 포도당의 농도 차이도 줄이세요.",
     substances: [
-      { id: "sodium", name: "나트륨 이온", short: "Na⁺", color: "#ee7869", outside: [2, 2], inside: [8, 8] },
-      { id: "potassium", name: "칼륨 이온", short: "K⁺", color: "#79a95d", outside: [7, 7], inside: [2, 2] },
+      { id: "sodium", name: "나트륨 이온", short: "Na⁺", color: "#ee7869", outside: [8, 10], inside: [1, 2] },
+      { id: "potassium", name: "칼륨 이온", short: "K⁺", color: "#79a95d", outside: [1, 2], inside: [6, 8] },
       { id: "glucose", name: "포도당", short: "G", color: "#e0a845", outside: [2, 2], inside: [8, 8] },
       { id: "oxygen", name: "산소", short: "O₂", color: "#67a7c5", outside: [8, 8], inside: [2, 2] }
     ],
@@ -59,7 +59,7 @@ const stages = [
       { id: "potassium-channel", name: "칼륨 통로", sub: "농도 기울기 방향", icon: "K", color: "#6e9f58" }
     ],
     goals: ["나트륨 이온: 세포 밖 > 세포 안", "칼륨 이온: 세포 안 > 세포 밖", "산소: 안팎의 개수 차이 1 이하", "포도당: 안팎의 개수 차이 1 이하"],
-    moves: [{ id: "sodium", tool: "na-k-pump", from: "inside", perCycle: 3 }, { id: "potassium", tool: "na-k-pump", from: "outside", perCycle: 2 }, { id: "oxygen", tool: "simple", from: "outside", perCycle: 1 }, { id: "glucose", tool: "facilitated", from: "inside", perCycle: 1 }],
+    moves: [{ id: "sodium", tool: "na-k-pump", from: "outside", perCycle: 3 }, { id: "potassium", tool: "na-k-pump", from: "inside", perCycle: 2 }, { id: "oxygen", tool: "simple", from: "outside", perCycle: 1 }, { id: "glucose", tool: "facilitated", from: "inside", perCycle: 1 }],
     hint: "이온 통로는 농도 기울기를 거스르지 못합니다. 펌프와 ATP를 함께 써야 해요.",
     fact: "나트륨-칼륨 펌프는 ATP를 써서 한 번에 Na⁺ 3개를 밖으로, K⁺ 2개를 안으로 옮깁니다. 산소와 포도당의 확산에는 ATP가 필요하지 않습니다."
   }
@@ -154,8 +154,8 @@ function generateCounts() {
       const oxygenLow = randomBetween([1, 3]);
       const glucoseLow = randomBetween([1, 3]);
       counts = {
-        sodium: { outside: sodiumLow, inside: sodiumLow + randomBetween([7, 9]) },
-        potassium: { outside: potassiumLow + randomBetween([5, 7]), inside: potassiumLow },
+        sodium: { outside: sodiumLow + randomBetween([7, 9]), inside: sodiumLow },
+        potassium: { outside: potassiumLow, inside: potassiumLow + randomBetween([5, 7]) },
         glucose: { outside: glucoseLow, inside: glucoseLow + randomBetween([3, 7]) },
         oxygen: { outside: oxygenLow + randomBetween([3, 7]), inside: oxygenLow }
       };
@@ -277,6 +277,7 @@ function setupStage() {
   state.stageScore = 0;
   state.atpBindings = {};
   state.activeMission = chooseMission();
+  if (state.stage === 2) state.activeMission = "Na⁺는 세포 밖에, K⁺는 세포 안에 더 많이 분포하도록 펌프로 농도 기울기를 유지·강화하세요.";
   $("#runButton").disabled = false;
   state.counts = generateCounts();
   state.budget = calculateBudget();
