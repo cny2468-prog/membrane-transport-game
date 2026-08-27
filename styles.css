@@ -36,7 +36,7 @@
 .lipid-unit b{position:absolute;left:3px;top:0;width:14px;height:14px;border-radius:50%;background:#ffd967;border:2px solid #9a7423;box-shadow:inset 0 0 0 2px #fff2a4}
 .lipid-unit i{position:absolute;top:13px;width:3px;height:38px;background:#c18745;border-radius:3px;transform-origin:top}
 .lipid-unit i:first-of-type{left:6px;transform:rotate(7deg)}.lipid-unit i:last-of-type{right:6px;transform:rotate(-7deg)}
-.membrane-inset .inset-oxygen{position:absolute;z-index:4;top:50%;left:-28px;width:26px;height:26px;border-radius:50%;background:#a8e5f7;border:3px solid #247092;color:#174d63;font:bold 8px sans-serif;display:grid;place-items:center;animation:oxygen-cross 2.4s ease-in-out forwards}
+.membrane-inset .inset-oxygen{position:absolute;z-index:4;top:50%;left:-28px;width:30px;height:30px;border-radius:50%;background:#a8e5f7;border:3px solid #247092;color:#174d63;font:bold 8px sans-serif;display:grid;place-items:center;animation:oxygen-cross 2.4s ease-in-out forwards;box-shadow:0 0 0 2px rgba(255,255,255,.45)}
 .membrane-inset.reverse .inset-oxygen{animation-name:oxygen-cross-reverse}
 @keyframes oxygen-cross{0%{left:calc(48% + var(--lane-offset,0px));top:-28px}35%{left:calc(48% + var(--lane-offset,0px));top:31%}58%{left:calc(52% + var(--lane-offset,0px));top:48%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:calc(49% + var(--lane-offset,0px));top:calc(100% + 4px);transform:scale(1)}}
 @keyframes oxygen-cross-reverse{0%{left:calc(49% + var(--lane-offset,0px));top:calc(100% + 4px)}35%{left:calc(49% + var(--lane-offset,0px));top:58%}58%{left:calc(47% + var(--lane-offset,0px));top:35%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:calc(48% + var(--lane-offset,0px));top:-28px;transform:scale(1)}}

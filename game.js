@@ -703,7 +703,7 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   const label = move.id === "glucose" ? "G" : move.id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : move.id === "protein" ? "P" : move.id === "waste" ? "W" : "O₂";
   const particleCount = Math.max(1, Math.round(move.amount || 1));
   const particles = Array.from({ length: particleCount }, (_, index) => {
-    const lane = (index - (particleCount - 1) / 2) * 22;
+    const lane = (index - (particleCount - 1) / 2) * 34;
     return `<span class="inset-oxygen ${move.id === "glucose" ? "inset-glucose" : ""}" style="--lane-offset:${lane}px">${label}</span>`;
   }).join("");
   let detail = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div>`;
