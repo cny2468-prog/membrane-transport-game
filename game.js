@@ -422,10 +422,12 @@ function refreshPlacements() {
     const slot = stage.slots.find(item => item.id === slotEl.dataset.slot);
     const toolId = state.placements[slot.id];
     const tool = stage.tools.find(item => item.id === toolId);
+    const slotIndex = stage.slots.findIndex(item => item.id === slot.id);
+    const orientation = [0, 90, 180, -90][slotIndex] ?? 0;
     slotEl.classList.toggle("has-device", Boolean(tool));
     slotEl.classList.toggle("holds-energy", ENERGY_TOOLS.has(toolId));
     slotEl.innerHTML = tool ? `
-      <div class="installed-device ${tool.id}" style="color:${tool.color}" title="${tool.name}">${toolVisual(tool.id)}<span class="sr-only">${tool.name}</span></div>
+      <div class="installed-device ${tool.id}" style="color:${tool.color};${tool.id === "endocytosis" || tool.id === "exocytosis" ? `transform:rotate(${orientation}deg)` : ""}" title="${tool.name}">${toolVisual(tool.id)}<span class="sr-only">${tool.name}</span></div>
       ${ENERGY_TOOLS.has(toolId) ? `<button class="atp-bind-button ${state.atpBindings[toolId] ? "bound" : ""}" type="button" data-bind-atp="${toolId}" aria-label="${tool.name}에 ATP ${state.atpBindings[toolId] ? "결합 해제" : "결합"}"><span class="atp-token-shape">${toolVisual("atp")}</span><span>${state.atpBindings[toolId] ? "ATP 결합됨" : "ATP 클릭해 결합"}</span></button>` : ""}
       <div class="cycle-stepper"><button type="button" data-minus aria-label="수송 횟수 줄이기">−</button><b>${state.cycles[slot.id]}</b><button type="button" data-plus aria-label="수송 횟수 늘리기">＋</button><small>회 작동</small></div>
       <button class="remove-tool" type="button" aria-label="배치 취소">×</button>` : `<span class="slot-question">?</span>`;
