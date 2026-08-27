@@ -42,18 +42,18 @@
 .lipid-unit b{position:absolute;left:3px;top:0;width:14px;height:14px;border-radius:50%;background:#ffd967;border:2px solid #9a7423;box-shadow:inset 0 0 0 2px #fff2a4}
 .lipid-unit i{position:absolute;top:13px;width:3px;height:38px;background:#c18745;border-radius:3px;transform-origin:top}
 .lipid-unit i:first-of-type{left:6px;transform:rotate(7deg)}.lipid-unit i:last-of-type{right:6px;transform:rotate(-7deg)}
-.membrane-inset .inset-oxygen{position:absolute;z-index:4;top:50%;left:-28px;width:30px;height:30px;border-radius:50%;background:#a8e5f7;border:3px solid #247092;color:#174d63;font:bold 8px sans-serif;display:grid;place-items:center;animation:oxygen-cross 2.4s ease-in-out forwards;box-shadow:0 0 0 2px rgba(255,255,255,.45)}
+.membrane-inset .inset-oxygen{position:absolute;z-index:4;top:50%;left:-28px;width:30px;height:30px;border-radius:50%;background:#a8e5f7;border:3px solid #247092;color:#174d63;font:bold 8px sans-serif;display:grid;place-items:center;animation:oxygen-cross 1.6s ease-in-out forwards;box-shadow:0 0 0 2px rgba(255,255,255,.45)}
 .membrane-inset.reverse .inset-oxygen{animation-name:oxygen-cross-reverse}
 @keyframes oxygen-cross{0%{left:calc(48% + var(--lane-offset,0px));top:-28px}35%{left:calc(48% + var(--lane-offset,0px));top:31%}58%{left:calc(52% + var(--lane-offset,0px));top:48%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:calc(49% + var(--lane-offset,0px));top:calc(100% + 4px);transform:scale(1)}}
 @keyframes oxygen-cross-reverse{0%{left:calc(49% + var(--lane-offset,0px));top:calc(100% + 4px)}35%{left:calc(49% + var(--lane-offset,0px));top:58%}58%{left:calc(47% + var(--lane-offset,0px));top:35%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:calc(48% + var(--lane-offset,0px));top:-28px;transform:scale(1)}}
 @keyframes inset-pop{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:scale(1)}}
 .inset-protein{position:absolute;z-index:3;left:46%;top:26%;width:32px;height:98px;background:#7663ae;border:3px solid #50418c;border-radius:45% 55% 48% 52%;box-shadow:inset 0 0 0 6px rgba(255,255,255,.22)}
 .inset-protein i{position:absolute;left:12px;top:5px;width:4px;height:82px;background:#fff;border-radius:4px}.inset-protein b{position:absolute;left:8px;top:31px;width:12px;height:22px;border-radius:50%;background:#ffd66d}
-.protein-cargo{animation:protein-cross 2.2s ease-in-out forwards}.facilitated.reverse .protein-cargo{animation-name:protein-cross-reverse}
+.protein-cargo{animation:protein-cross 1.8s ease-in-out forwards}.facilitated.reverse .protein-cargo{animation-name:protein-cross-reverse}
 .inset-glucose{width:30px!important;height:28px!important;background:#ffd269!important;border-color:#8a5817!important;color:#6b4310!important;border-radius:0!important;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);display:grid!important;place-items:center}
 @keyframes protein-cross{0%{left:48%;top:-25px}45%{left:48%;top:30%}65%{left:51%;top:50%;transform:scale(.7)}100%{left:49%;top:calc(100% + 5px)}}
 @keyframes protein-cross-reverse{0%{left:49%;top:calc(100% + 5px)}45%{left:49%;top:52%}65%{left:48%;top:30%;transform:scale(.7)}100%{left:48%;top:-25px}}
-.inset-vesicle{position:absolute;z-index:4;left:8%;top:30%;width:66px;height:66px;border:5px solid #7b63a0;border-radius:50%;background:rgba(220,204,235,.36);animation:vesicle-cross 2.2s ease-in-out forwards;box-shadow:inset 0 0 10px rgba(123,99,160,.35)}
+.inset-vesicle{position:absolute;z-index:4;left:8%;top:30%;width:66px;height:66px;border:5px solid #7b63a0;border-radius:50%;background:rgba(220,204,235,.36);animation:vesicle-cross 1.8s ease-in-out forwards;box-shadow:inset 0 0 10px rgba(123,99,160,.35)}
 .inset-vesicle i,.inset-vesicle b{position:absolute;border-radius:50%;background:#eea59b}.inset-vesicle i{width:13px;height:13px;left:16px;top:18px}.inset-vesicle b{width:10px;height:10px;right:14px;bottom:16px}
 .exocytosis .inset-vesicle{animation-name:vesicle-fuse}.exocytosis.reverse .inset-vesicle{animation-name:vesicle-fuse}
 @keyframes vesicle-cross{0%{left:43%;top:-8px;transform:scale(.7)}42%{left:43%;top:27%;transform:scale(1)}62%{left:43%;top:48%;transform:scale(1.15)}100%{left:43%;top:calc(100% - 56px);transform:scale(.88)}}
@@ -269,3 +269,7 @@
 
 /* 참고 이미지처럼 두 겹의 인지질 머리와 소수성 꼬리가 선명하게 보이는 세포막 */
 .membrane-outer{border-width:18px!important;box-shadow:0 0 0 2px #355f58,0 0 0 6px #fff3a7,0 0 0 10px #d39b35,0 0 0 22px #355f58,0 14px 38px rgba(23,58,63,.34)!important}
+.particle.carbon-dioxide{width:38px!important;height:24px!important;color:#6f638f!important}
+.particle.carbon-dioxide i{position:absolute;width:13px!important;height:13px!important;border:2px solid #6f638f!important;border-radius:50%;background:#d9d1ee!important;top:5px!important}
+.particle.carbon-dioxide i:first-child{left:0!important}.particle.carbon-dioxide i:nth-child(2){right:0!important}.particle.carbon-dioxide b{position:absolute!important;left:14px!important;top:7px!important;color:#594c7a!important;font-size:7px!important;background:#fff!important;border-radius:5px;padding:1px 2px}
+.inset-carbon-dioxide{width:38px!important;height:24px!important;border-radius:0!important;background:linear-gradient(90deg,#d9d1ee 0 34%,#fff 34% 66%,#d9d1ee 66%)!important;border-color:#6f638f!important;color:#594c7a!important}

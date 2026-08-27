@@ -509,7 +509,8 @@ function renderParticles() {
 function makeParticles(container, item, count, inside, groupIndex) {
   for (let index = 0; index < count; index += 1) {
     const dot = document.createElement("span");
-    dot.className = `particle ${item.id}`;
+    const carbonClass = item.id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide" ? " carbon-dioxide" : "";
+    dot.className = `particle ${item.id}${carbonClass}`;
     dot.innerHTML = particleGlyph(item.id, item.short);
     let x, y;
     if (inside) {
@@ -541,7 +542,7 @@ function makeParticles(container, item, count, inside, groupIndex) {
 }
 
 function particleGlyph(id, short) {
-  if (id === "oxygen") return `<i></i><i></i><b>O₂</b>`;
+  if (id === "oxygen") return state.simpleDiffusionId === "carbon-dioxide" ? `<i></i><i></i><b>C</b>` : `<i></i><i></i><b>O₂</b>`;
   if (id === "glucose") return `<b>G</b>`;
   if (id === "protein") return `<i></i><i></i><i></i><b>P</b>`;
   if (id === "waste") return `<b>W</b>`;
@@ -619,7 +620,7 @@ function animateTransport(moves) {
   const tasks = [];
   let timeline = 0;
   queues.forEach(queue => {
-    const travelTime = queue.move.tool === "simple" ? 1800 : queue.move.tool === "facilitated" ? 2100 : queue.move.tool === "na-k-pump" ? 1500 : 2400;
+    const travelTime = queue.move.tool === "simple" ? 1250 : queue.move.tool === "facilitated" ? 1500 : queue.move.tool === "na-k-pump" ? 1050 : 1750;
     queue.sources.forEach((source, index) => {
       tasks.push({ move: queue.move, source, index, sourceCount: queue.sources.length, delay: timeline, travelTime });
       timeline += travelTime + 320;
@@ -710,13 +711,13 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   const particleCount = Math.max(1, Math.round(move.amount || 1));
   const particles = Array.from({ length: particleCount }, (_, index) => {
     const lane = (index - (particleCount - 1) / 2) * 34;
-    return `<span class="inset-oxygen ${move.id === "glucose" ? "inset-glucose" : ""}" style="--lane-offset:${lane}px">${label}</span>`;
+    return `<span class="inset-oxygen ${move.id === "glucose" ? "inset-glucose" : ""} ${move.id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide" ? "inset-carbon-dioxide" : ""}" style="--lane-offset:${lane}px">${label}</span>`;
   }).join("");
   let detail = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div>`;
   if (move.tool === "simple") detail += particles;
   if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span>${particles.replaceAll("inset-oxygen", "inset-oxygen protein-cargo")}`;
   if (move.tool === "endocytosis" || move.tool === "exocytosis") detail += `<span class="inset-vesicle"><i></i><b></b></span>`;
-  if (move.tool === "na-k-pump") detail += `<span class="inset-pump">Na⁺ 3  ⇄  K⁺ 2</span>`;
+  if (move.tool === "na-k-pump") detail += `<span class="inset-pump">Na⁺ 3개 → 밖<br>K⁺ 2개 ← 안</span>`;
   inset.innerHTML = detail;
   inset.className = `membrane-inset transport-inset ${move.tool} ${move.from === "inside" ? "reverse" : ""}`;
   const width = Math.min(330, sceneRect.width * .64);
@@ -725,7 +726,7 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   Object.assign(inset.style, { left: `${left}px`, top: `${top}px`, right: "auto", bottom: "auto", width: `${width}px` });
   inset.classList.remove("hidden");
   clearTimeout(showTransportInset.timer);
-  showTransportInset.timer = setTimeout(() => inset.classList.add("hidden"), 2200);
+  showTransportInset.timer = setTimeout(() => inset.classList.add("hidden"), 1900);
 }
 
 function animateATPUse(layer, sceneRect, moves) {
