@@ -155,7 +155,7 @@ function generateCounts() {
       const glucoseLow = randomBetween([1, 3]);
       counts = {
         sodium: { outside: 9, inside: 6 },
-        potassium: { outside: 6, inside: 3 },
+        potassium: { outside: 3, inside: 6 },
         glucose: { outside: glucoseLow, inside: glucoseLow + randomBetween([3, 7]) },
         oxygen: { outside: oxygenLow + randomBetween([3, 7]), inside: oxygenLow }
       };
@@ -277,7 +277,7 @@ function setupStage() {
   state.stageScore = 0;
   state.atpBindings = {};
   state.activeMission = chooseMission();
-  if (state.stage === 2) state.activeMission = "펌프로 Na⁺ 3개를 밖으로, K⁺ 2개를 안으로 이동해 Na⁺는 밖 12개 이상, K⁺는 안 5개 이상으로 만드세요.";
+  if (state.stage === 2) state.activeMission = "펌프로 Na⁺ 3개를 밖으로, K⁺ 2개를 안으로 이동해 Na⁺는 밖 12개 이상, K⁺는 안 8개 이상으로 만드세요.";
   $("#runButton").disabled = false;
   state.counts = generateCounts();
   state.budget = calculateBudget();
@@ -470,15 +470,15 @@ function renderCounts(changed = false) {
 function goalChecks() {
   if (state.stage === 0) return ["oxygen", "glucose"].map(id => Math.abs(state.counts[id].outside - state.counts[id].inside) <= 1);
   if (state.stage === 1) return [state.counts.protein.inside > state.counts.protein.outside, state.counts.waste.outside > state.counts.waste.inside, Math.abs(state.counts.oxygen.outside - state.counts.oxygen.inside) <= 1];
-  return [state.counts.sodium.outside >= 12, state.counts.potassium.inside >= 5, Math.abs(state.counts.oxygen.outside - state.counts.oxygen.inside) <= 1, Math.abs(state.counts.glucose.outside - state.counts.glucose.inside) <= 1];
+  return [state.counts.sodium.outside >= 12, state.counts.potassium.inside >= 8, Math.abs(state.counts.oxygen.outside - state.counts.oxygen.inside) <= 1, Math.abs(state.counts.glucose.outside - state.counts.glucose.inside) <= 1];
 }
 
 function renderGoals() {
   const checks = goalChecks();
   const diffusionLabel = state.diffusionName || "산소 (O₂)";
   const goals = currentStage().goals.map((goal, index) => {
-    if (state.stage === 2 && index === 0) return "Na⁺: 세포 밖 3개 → 12개 이상";
-    if (state.stage === 2 && index === 1) return "K⁺: 세포 안 3개 → 5개 이상";
+    if (state.stage === 2 && index === 0) return "Na⁺: 세포 밖 9개 → 12개 이상";
+    if (state.stage === 2 && index === 1) return "K⁺: 세포 안 6개 → 8개 이상";
     const diffusionGoal = (state.stage === 0 && index === 1) || (state.stage === 1 && index === 2) || (state.stage === 2 && index === 2);
     return diffusionGoal ? `${diffusionLabel}: 세포 안팎 개수 차이 1 이하` : goal;
   });
@@ -741,7 +741,7 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
     const heads = Array.from({ length: 14 }, (_, index) => `<b style="--a:${index / 14 * 360}deg"></b>`).join("");
     detail += `<span class="inset-vesicle"><span class="inset-vesicle-lipids">${heads}</span><i></i><b></b></span>`;
   }
-  if (move.tool === "na-k-pump") detail += `<div class="pump-set"><span class="pump-set-title">한 세트</span><span class="inset-ion sodium-ion pump-out">Na⁺</span><span class="inset-ion sodium-ion pump-out">Na⁺</span><span class="inset-ion sodium-ion pump-out">Na⁺</span><span class="inset-ion potassium-ion pump-in">K⁺</span><span class="inset-ion potassium-ion pump-in">K⁺</span></div>`;
+  if (move.tool === "na-k-pump") detail += `<span class="inset-pump">Na⁺/K⁺<small>ATP 펌프</small></span><div class="pump-set"><span class="pump-set-title">한 세트 · Na⁺ 3개 밖으로 / K⁺ 2개 안으로</span><span class="inset-ion sodium-ion pump-out">Na⁺</span><span class="inset-ion sodium-ion pump-out">Na⁺</span><span class="inset-ion sodium-ion pump-out">Na⁺</span><span class="inset-ion potassium-ion pump-in">K⁺</span><span class="inset-ion potassium-ion pump-in">K⁺</span></div>`;
   inset.innerHTML = detail;
   inset.className = `membrane-inset transport-inset ${move.tool} ${move.from === "inside" ? "reverse" : ""}`;
   const width = Math.min(330, sceneRect.width * .64);
