@@ -619,7 +619,7 @@ function animateTransport(moves) {
   queues.forEach(queue => {
     const groupDelay = timeline;
     const travelTime = queue.move.tool === "simple" ? 1800 : queue.move.tool === "facilitated" ? 2100 : queue.move.tool === "na-k-pump" ? 1500 : 2400;
-    queue.sources.forEach((source, index) => tasks.push({ move: queue.move, source, index, delay: groupDelay, travelTime }));
+    queue.sources.forEach((source, index) => tasks.push({ move: queue.move, source, index, sourceCount: queue.sources.length, delay: groupDelay, travelTime }));
     timeline += travelTime + 280;
   });
   tasks.forEach((task, taskIndex) => {
@@ -647,7 +647,7 @@ function animateTransport(moves) {
       const distance = Math.hypot(dx, dy) || 1;
       const normalX = dx / distance;
       const normalY = dy / distance;
-      const spread = (index - (queue.sources.length - 1) / 2) * 24;
+      const spread = (index - (task.sourceCount - 1) / 2) * 24;
       const tangentX = -normalY;
       const tangentY = normalX;
       const laneGateX = gateCenterX + tangentX * spread;
