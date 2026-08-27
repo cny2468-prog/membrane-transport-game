@@ -214,13 +214,13 @@ function clearEnergyBinding(toolId) {
 }
 
 function calculateBudget() {
-  if (state.stage === 0) {
+  if (state.stage <= 1) {
     return ["oxygen", "glucose"].reduce((sum, id) => {
       const count = state.counts[id];
       return sum + Math.floor(Math.abs(count.outside - count.inside) / 2);
     }, 0);
   }
-  if (state.stage === 1) {
+  if (state.stage === 2) {
     const protein = state.counts.protein;
     const waste = state.counts.waste;
     const oxygen = state.counts.oxygen;
