@@ -709,7 +709,8 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   const inset = $("#membraneInset");
   const units = Array.from({ length: 13 }, () => `<span class="lipid-unit"><b></b><i></i><i></i></span>`).join("");
   const label = move.id === "glucose" ? "G" : move.id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : move.id === "protein" ? "P" : move.id === "waste" ? "W" : "O₂";
-  const particleCount = Math.max(1, Math.round(move.amount || 1));
+  // 이 함수는 작업 큐의 입자 하나마다 호출되므로 확대창에도 하나만 표시
+  const particleCount = 1;
   const particles = Array.from({ length: particleCount }, (_, index) => {
     const lane = (index - (particleCount - 1) / 2) * 34;
     return `<span class="inset-oxygen ${move.id === "glucose" ? "inset-glucose" : ""} ${move.id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide" ? "inset-carbon-dioxide" : ""}" style="--lane-offset:${lane}px">${label}</span>`;
