@@ -38,14 +38,14 @@
 .lipid-unit i:first-of-type{left:6px;transform:rotate(7deg)}.lipid-unit i:last-of-type{right:6px;transform:rotate(-7deg)}
 .membrane-inset .inset-oxygen{position:absolute;z-index:4;top:50%;left:-28px;width:26px;height:26px;border-radius:50%;background:#a8e5f7;border:3px solid #247092;color:#174d63;font:bold 8px sans-serif;display:grid;place-items:center;animation:oxygen-cross 2.4s ease-in-out forwards}
 .membrane-inset.reverse .inset-oxygen{animation-name:oxygen-cross-reverse}
-@keyframes oxygen-cross{0%{left:-28px;top:47%}35%{left:34%;top:47%}58%{left:52%;top:53%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:calc(100% + 4px);top:49%;transform:scale(1)}}
-@keyframes oxygen-cross-reverse{0%{left:calc(100% + 4px);top:49%}35%{left:58%;top:49%}58%{left:39%;top:53%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:-28px;top:47%;transform:scale(1)}}
+@keyframes oxygen-cross{0%{left:48%;top:-28px}35%{left:48%;top:31%}58%{left:52%;top:48%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:49%;top:calc(100% + 4px);transform:scale(1)}}
+@keyframes oxygen-cross-reverse{0%{left:49%;top:calc(100% + 4px)}35%{left:49%;top:58%}58%{left:47%;top:35%;transform:scale(.72);box-shadow:0 0 0 8px rgba(255,255,255,.35)}100%{left:48%;top:-28px;transform:scale(1)}}
 @keyframes inset-pop{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:scale(1)}}
 .inset-protein{position:absolute;z-index:3;left:46%;top:26%;width:32px;height:98px;background:#7663ae;border:3px solid #50418c;border-radius:45% 55% 48% 52%;box-shadow:inset 0 0 0 6px rgba(255,255,255,.22)}
 .inset-protein i{position:absolute;left:12px;top:5px;width:4px;height:82px;background:#fff;border-radius:4px}.inset-protein b{position:absolute;left:8px;top:31px;width:12px;height:22px;border-radius:50%;background:#ffd66d}
 .protein-cargo{animation:protein-cross 2.2s ease-in-out forwards}.facilitated.reverse .protein-cargo{animation-name:protein-cross-reverse}
-@keyframes protein-cross{0%{left:-25px;top:49%}45%{left:42%;top:49%}65%{left:51%;top:49%;transform:scale(.7)}100%{left:calc(100% + 5px);top:49%}}
-@keyframes protein-cross-reverse{0%{left:calc(100% + 5px);top:49%}45%{left:52%;top:49%}65%{left:42%;top:49%;transform:scale(.7)}100%{left:-25px;top:49%}}
+@keyframes protein-cross{0%{left:48%;top:-25px}45%{left:48%;top:30%}65%{left:51%;top:50%;transform:scale(.7)}100%{left:49%;top:calc(100% + 5px)}}
+@keyframes protein-cross-reverse{0%{left:49%;top:calc(100% + 5px)}45%{left:49%;top:52%}65%{left:48%;top:30%;transform:scale(.7)}100%{left:48%;top:-25px}}
 .inset-vesicle{position:absolute;z-index:4;left:8%;top:30%;width:66px;height:66px;border:5px solid #7b63a0;border-radius:50%;background:rgba(220,204,235,.36);animation:vesicle-cross 2.2s ease-in-out forwards;box-shadow:inset 0 0 10px rgba(123,99,160,.35)}
 .inset-vesicle i,.inset-vesicle b{position:absolute;border-radius:50%;background:#eea59b}.inset-vesicle i{width:13px;height:13px;left:16px;top:18px}.inset-vesicle b{width:10px;height:10px;right:14px;bottom:16px}
 .exocytosis .inset-vesicle{animation-name:vesicle-fuse}.exocytosis.reverse .inset-vesicle{animation-name:vesicle-fuse}

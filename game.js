@@ -615,16 +615,16 @@ function animateTransport(moves) {
     return { move, sources: [...document.querySelectorAll(`${sourceId} .particle.${move.id}`)].slice(0, move.amount) };
   });
   const tasks = [];
-  const longest = Math.max(...queues.map(queue => queue.sources.length));
-  for (let round = 0; round < longest; round += 1) {
-    queues.forEach(queue => { if (queue.sources[round]) tasks.push({ move: queue.move, source: queue.sources[round], index: round }); });
-  }
   let timeline = 0;
+  queues.forEach(queue => {
+    const groupDelay = timeline;
+    const travelTime = queue.move.tool === "simple" ? 1800 : queue.move.tool === "facilitated" ? 2100 : queue.move.tool === "na-k-pump" ? 1500 : 2400;
+    queue.sources.forEach((source, index) => tasks.push({ move: queue.move, source, index, delay: groupDelay, travelTime }));
+    timeline += travelTime + 280;
+  });
   tasks.forEach((task, taskIndex) => {
       const { move, source, index } = task;
-      const travelTime = move.tool === "simple" ? 620 : move.tool === "facilitated" ? 1380 : move.tool === "na-k-pump" ? 900 : 1480;
-      const delay = timeline;
-      timeline += travelTime + 130;
+      const { delay, travelTime } = task;
       const rect = source.getBoundingClientRect();
       const clone = source.cloneNode(true);
       clone.classList.add("transport-particle");
@@ -632,19 +632,24 @@ function animateTransport(moves) {
       const startY = rect.top - sceneRect.top;
       let targetX;
       let targetY;
-      if (move.from === "outside") {
-        targetX = cellRect.left - sceneRect.left + cellRect.width * (.32 + (index % 3) * .18);
-        targetY = cellRect.top - sceneRect.top + cellRect.height * (.3 + (index % 2) * .35);
-      } else {
-        const rightSide = (index + taskIndex) % 2 === 0;
-        targetX = rightSide ? sceneRect.width * .84 : sceneRect.width * .12;
-        targetY = sceneRect.height * (.18 + (index % 3) * .28);
-      }
       const device = document.querySelector(`.drop-slot[data-slot="${move.slot}"] .installed-device`);
       const slot = document.querySelector(`.drop-slot[data-slot="${move.slot}"]`);
       const deviceRect = device ? device.getBoundingClientRect() : cellRect;
-      const gateX = deviceRect.left - sceneRect.left + deviceRect.width / 2 - rect.width / 2;
-      const gateY = deviceRect.top - sceneRect.top + deviceRect.height / 2 - rect.height / 2;
+      const gateCenterX = deviceRect.left - sceneRect.left + deviceRect.width / 2;
+      const gateCenterY = deviceRect.top - sceneRect.top + deviceRect.height / 2;
+      const centerX = cellRect.left - sceneRect.left + cellRect.width / 2;
+      const centerY = cellRect.top - sceneRect.top + cellRect.height / 2;
+      const inwardLength = Math.min(cellRect.width, cellRect.height) * .25;
+      const outwardLength = Math.min(sceneRect.width, sceneRect.height) * .25;
+      const dx = gateCenterX - centerX;
+      const dy = gateCenterY - centerY;
+      const distance = Math.hypot(dx, dy) || 1;
+      const normalX = dx / distance;
+      const normalY = dy / distance;
+      targetX = gateCenterX + (move.from === "outside" ? -normalX * inwardLength : normalX * outwardLength) - rect.width / 2;
+      targetY = gateCenterY + (move.from === "outside" ? -normalY * inwardLength : normalY * outwardLength) - rect.height / 2;
+      const gateX = gateCenterX - rect.width / 2;
+      const gateY = gateCenterY - rect.height / 2;
       setTimeout(() => showTransportInset(move, gateX, gateY, sceneRect), delay);
       const length = Math.hypot(targetX - startX, targetY - startY) || 1;
       const unitX = (targetX - startX) / length;
@@ -674,7 +679,7 @@ function animateTransport(moves) {
       if (move.tool === "simple" || move.tool === "facilitated") {
         const speedLabel = document.createElement("b");
         speedLabel.className = `transport-speed ${move.tool}`;
-        setTimeout(() => { speedLabel.textContent = `${move.from === "outside" ? "밖 → 안" : "안 → 밖"} · ${move.tool === "simple" ? "인지질 이중층" : "막 단백질"}`; }, delay);
+        setTimeout(() => { speedLabel.textContent = move.tool === "simple" ? "단순확산 · 인지질 이중층" : "촉진확산 · 막 단백질"; }, delay);
         speedLabel.textContent = move.tool === "simple" ? "단순 확산 · 빠름" : "촉진 확산 · 느림";
         Object.assign(speedLabel.style, { left: `${gateX}px`, top: `${gateY - 26}px` });
         layer.appendChild(speedLabel);
@@ -691,13 +696,12 @@ function showTransportInset(move, gateX, gateY, sceneRect) {
   const inset = $("#membraneInset");
   const units = Array.from({ length: 13 }, () => `<span class="lipid-unit"><b></b><i></i><i></i></span>`).join("");
   const label = state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : "O₂";
-  const direction = move.from === "outside" ? "outside→inside" : "inside→outside";
   let detail = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div>`;
   if (move.tool === "simple") detail += `<span class="inset-oxygen">${label}</span>`;
   if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span><span class="inset-oxygen protein-cargo">${label}</span>`;
   if (move.tool === "endocytosis" || move.tool === "exocytosis") detail += `<span class="inset-vesicle"><i></i><b></b></span>`;
   if (move.tool === "na-k-pump") detail += `<span class="inset-pump">Na⁺ 3  ⇄  K⁺ 2</span>`;
-  inset.innerHTML = `<small class="inset-direction">${direction}</small>${detail}`;
+  inset.innerHTML = detail;
   inset.className = `membrane-inset transport-inset ${move.tool} ${move.from === "inside" ? "reverse" : ""}`;
   const width = Math.min(330, sceneRect.width * .64);
   const left = Math.max(8, Math.min(sceneRect.width - width - 8, gateX - width / 2));
