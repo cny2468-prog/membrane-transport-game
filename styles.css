@@ -226,6 +226,10 @@
 .drop-slot:nth-child(2) .installed-device{transform:rotate(90deg)}
 .drop-slot:nth-child(3) .installed-device{transform:rotate(180deg)}
 .drop-slot:nth-child(4) .installed-device{transform:rotate(-90deg)}
+.drop-slot:nth-child(1) .installed-device.endocytosis,.drop-slot:nth-child(1) .installed-device.exocytosis{transform:rotate(0deg)!important}
+.drop-slot:nth-child(2) .installed-device.endocytosis,.drop-slot:nth-child(2) .installed-device.exocytosis{transform:rotate(90deg)!important}
+.drop-slot:nth-child(3) .installed-device.endocytosis,.drop-slot:nth-child(3) .installed-device.exocytosis{transform:rotate(180deg)!important}
+.drop-slot:nth-child(4) .installed-device.endocytosis,.drop-slot:nth-child(4) .installed-device.exocytosis{transform:rotate(-90deg)!important}
 .drop-slot.holds-energy .installed-device{transform:none!important}
 .drop-slot .slot-question{width:45px;height:45px;border:2px dashed #496e69;border-radius:50%;display:grid;place-items:center;background:rgba(255,250,240,.94);color:#315b56;font:28px/1 "Jua",sans-serif;box-shadow:0 4px 9px rgba(23,58,63,.12)}
 .drop-slot:not(.has-device){width:72px;min-height:64px;border:0;background:transparent;box-shadow:none}
