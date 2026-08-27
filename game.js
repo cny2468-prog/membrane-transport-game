@@ -277,7 +277,7 @@ function setupStage() {
   state.stageScore = 0;
   state.atpBindings = {};
   state.activeMission = chooseMission();
-  if (state.stage === 2) state.activeMission = "Na⁺는 세포 밖에, K⁺는 세포 안에 더 많이 분포하도록 펌프로 농도 기울기를 유지·강화하세요.";
+  if (state.stage === 2) state.activeMission = "펌프로 Na⁺ 3개를 밖으로, K⁺ 2개를 안으로 이동해 Na⁺는 밖 12개 이상, K⁺는 안 5개 이상으로 만드세요.";
   $("#runButton").disabled = false;
   state.counts = generateCounts();
   state.budget = calculateBudget();
@@ -470,13 +470,15 @@ function renderCounts(changed = false) {
 function goalChecks() {
   if (state.stage === 0) return ["oxygen", "glucose"].map(id => Math.abs(state.counts[id].outside - state.counts[id].inside) <= 1);
   if (state.stage === 1) return [state.counts.protein.inside > state.counts.protein.outside, state.counts.waste.outside > state.counts.waste.inside, Math.abs(state.counts.oxygen.outside - state.counts.oxygen.inside) <= 1];
-  return [state.counts.sodium.outside > state.counts.sodium.inside, state.counts.potassium.inside > state.counts.potassium.outside, Math.abs(state.counts.oxygen.outside - state.counts.oxygen.inside) <= 1, Math.abs(state.counts.glucose.outside - state.counts.glucose.inside) <= 1];
+  return [state.counts.sodium.outside >= 12, state.counts.potassium.inside >= 5, Math.abs(state.counts.oxygen.outside - state.counts.oxygen.inside) <= 1, Math.abs(state.counts.glucose.outside - state.counts.glucose.inside) <= 1];
 }
 
 function renderGoals() {
   const checks = goalChecks();
   const diffusionLabel = state.diffusionName || "산소 (O₂)";
   const goals = currentStage().goals.map((goal, index) => {
+    if (state.stage === 2 && index === 0) return "Na⁺: 세포 밖 3개 → 12개 이상";
+    if (state.stage === 2 && index === 1) return "K⁺: 세포 안 3개 → 5개 이상";
     const diffusionGoal = (state.stage === 0 && index === 1) || (state.stage === 1 && index === 2) || (state.stage === 2 && index === 2);
     return diffusionGoal ? `${diffusionLabel}: 세포 안팎 개수 차이 1 이하` : goal;
   });
