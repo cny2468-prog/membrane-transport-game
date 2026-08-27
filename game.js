@@ -609,6 +609,8 @@ function animateTransport(moves) {
   const sceneRect = scene.getBoundingClientRect();
   const cellRect = document.querySelector(".cell-body").getBoundingClientRect();
   document.querySelector(".cell-body").classList.add("transporting");
+  const simpleMove = moves.find(move => move.tool === "simple");
+  if (simpleMove) showMembraneInset(simpleMove, sceneRect);
   if (moves.some(move => ENERGY_TOOLS.has(move.tool))) animateATPUse(layer, sceneRect, moves);
   const queues = moves.map(move => {
     const sourceId = move.from === "outside" ? "#outsideParticles" : "#insideParticles";
@@ -684,6 +686,17 @@ function animateTransport(moves) {
       setTimeout(() => clone.remove(), travelTime + delay + 100);
   });
   return Math.max(0, timeline - 130);
+}
+
+function showMembraneInset(move, sceneRect) {
+  const inset = $("#membraneInset");
+  const units = Array.from({ length: 13 }, () => `<span class="lipid-unit"><b></b><i></i><i></i></span>`).join("");
+  const label = state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : "O₂";
+  inset.innerHTML = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div><span class="inset-oxygen">${label}</span>`;
+  inset.classList.toggle("reverse", move.from === "inside");
+  inset.classList.remove("hidden");
+  clearTimeout(showMembraneInset.timer);
+  showMembraneInset.timer = setTimeout(() => inset.classList.add("hidden"), Math.max(2600, sceneRect ? 2800 : 2600));
 }
 
 function animateATPUse(layer, sceneRect, moves) {
