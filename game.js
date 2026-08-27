@@ -619,10 +619,11 @@ function animateTransport(moves) {
   const tasks = [];
   let timeline = 0;
   queues.forEach(queue => {
-    const groupDelay = timeline;
     const travelTime = queue.move.tool === "simple" ? 1800 : queue.move.tool === "facilitated" ? 2100 : queue.move.tool === "na-k-pump" ? 1500 : 2400;
-    queue.sources.forEach((source, index) => tasks.push({ move: queue.move, source, index, sourceCount: queue.sources.length, delay: groupDelay, travelTime }));
-    timeline += travelTime + 280;
+    queue.sources.forEach((source, index) => {
+      tasks.push({ move: queue.move, source, index, sourceCount: queue.sources.length, delay: timeline, travelTime });
+      timeline += travelTime + 320;
+    });
   });
   tasks.forEach((task, taskIndex) => {
       const { move, source, index } = task;
@@ -631,6 +632,7 @@ function animateTransport(moves) {
       const clone = source.cloneNode(true);
       clone.classList.add("transport-particle");
       clone.dataset.molecule = move.id;
+      if (move.tool === "endocytosis") clone.style.visibility = "hidden";
       const startX = rect.left - sceneRect.left;
       const startY = rect.top - sceneRect.top;
       let targetX;
@@ -674,11 +676,11 @@ function animateTransport(moves) {
       }
       setTimeout(() => { source.style.opacity = "0"; tone(430 + taskIndex * 16, .045); }, delay);
       const transportFrames = [
-        { left: `${startX}px`, top: `${startY}px`, transform: "scale(1)", opacity: 1, offset: 0 },
+        { left: `${startX}px`, top: `${startY}px`, transform: "scale(1)", opacity: move.tool === "exocytosis" ? 0 : 1, offset: 0 },
         { left: `${entryX}px`, top: `${entryY}px`, transform: "scale(1)", opacity: 1, offset: move.tool === "facilitated" ? .26 : .34 },
         { left: `${gateX}px`, top: `${gateY}px`, transform: "scale(.72)", opacity: .88, offset: move.tool === "facilitated" ? .42 : .5 },
         ...(move.tool === "facilitated" ? [{ left: `${gateX}px`, top: `${gateY}px`, transform: "scale(.72)", opacity: .88, offset: .64 }] : []),
-        { left: `${exitX}px`, top: `${exitY}px`, transform: "scale(.9)", opacity: 1, offset: move.tool === "facilitated" ? .74 : .66 },
+        { left: `${exitX}px`, top: `${exitY}px`, transform: "scale(.9)", opacity: move.tool === "exocytosis" ? 0 : 1, offset: move.tool === "facilitated" ? .74 : .66 },
         { left: `${targetX}px`, top: `${targetY}px`, transform: "scale(1)", opacity: 1, offset: 1 }
       ];
       // 같은 경로의 입자들은 같은 타이밍에 애니메이션을 시작하고, 그룹 사이에서만 대기
@@ -766,6 +768,7 @@ function animateVesicleProcess(data) {
   const { layer, move, startX, startY, entryX, entryY, gateX, gateY, exitX, exitY, targetX, targetY, rect, delay, duration } = data;
   const shell = document.createElement("span");
   shell.className = `vesicle-shell ${move.from === "inside" ? "exocytosis" : "endocytosis"}`;
+  shell.innerHTML = `<i></i><i></i><i></i>`;
   Object.assign(shell.style, { left: `${startX - 7}px`, top: `${startY - 7}px`, width: `${rect.width + 14}px`, height: `${rect.height + 14}px`, opacity: "0" });
   layer.appendChild(shell);
   const path = [
