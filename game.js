@@ -679,7 +679,9 @@ function animateTransport(moves) {
         { left: `${exitX}px`, top: `${exitY}px`, transform: "scale(.9)", opacity: 1, offset: move.tool === "facilitated" ? .74 : .66 },
         { left: `${targetX}px`, top: `${targetY}px`, transform: "scale(1)", opacity: 1, offset: 1 }
       ];
-      clone.animate(transportFrames, { duration: travelTime, delay, easing: "cubic-bezier(.45,.05,.2,1)", fill: "forwards" });
+      // 같은 경로의 입자들은 같은 타이밍에 애니메이션을 시작하고, 그룹 사이에서만 대기
+      const playTransport = () => clone.animate(transportFrames, { duration: travelTime, easing: "cubic-bezier(.45,.05,.2,1)", fill: "forwards" });
+      setTimeout(playTransport, delay);
       if (device) setTimeout(() => device.animate([{ filter: "brightness(1)" }, { filter: "brightness(1.55) drop-shadow(0 0 7px #fff2a8)" }, { filter: "brightness(1)" }], { duration: 420 }), delay + 420);
       if (false) {
         const speedLabel = document.createElement("b");
