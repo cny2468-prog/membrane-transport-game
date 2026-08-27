@@ -318,6 +318,7 @@ function setupStage() {
   state.stageScore = 0;
   state.atpBindings = {};
   state.activeMission = chooseMission();
+  if (state.stage === 1) state.activeMission = "\uC774\uC0B0\uD654\uD0C4\uC18C (CO\u2082)\uC640 \uD3EC\uB3C4\uB2F9\uC758 \uC0C8 \uB18D\uB3C4 \uCC28\uC774\uB97C \uAC01\uAC01 1 \uC774\uD558\uB85C \uC904\uC774\uC138\uC694.";
   if (state.stage >= 3) state.activeMission = "펌프로 Na⁺ 3개를 밖으로, K⁺ 2개를 안으로 이동해 Na⁺는 밖 12개 이상, K⁺는 안 8개 이상으로 만드세요.";
   $("#runButton").disabled = false;
   state.counts = generateCounts();
@@ -520,6 +521,7 @@ function renderGoals() {
   const goals = currentStage().goals.map((goal, index) => {
     if (state.stage >= 3 && index === 0) return "Na⁺: 세포 밖 9개 → 12개 이상";
     if (state.stage >= 3 && index === 1) return "K⁺: 세포 안 6개 → 8개 이상";
+    if (state.stage === 1 && index === 1) return "\uD3EC\uB3C4\uB2F9: \uC548\uBC16\uC758 \uAC1C\uC218 \uCC28\uC774 1 \uC774\uD558";
     const diffusionGoal = (state.stage <= 1 && index === 1) || (state.stage === 2 && index === 2) || (state.stage >= 3 && index >= 2);
     return diffusionGoal ? `${diffusionLabel}: 세포 안팎 개수 차이 1 이하` : goal;
   });
