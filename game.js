@@ -694,7 +694,7 @@ function animateTransport(moves) {
 function showTransportInset(move, gateX, gateY, sceneRect) {
   const inset = $("#membraneInset");
   const units = Array.from({ length: 13 }, () => `<span class="lipid-unit"><b></b><i></i><i></i></span>`).join("");
-  const label = state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : "O₂";
+  const label = move.id === "glucose" ? "포도당" : move.id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : move.id === "protein" ? "단백질" : move.id === "waste" ? "노폐물" : "O₂";
   let detail = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div>`;
   if (move.tool === "simple") detail += `<span class="inset-oxygen">${label}</span>`;
   if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span><span class="inset-oxygen protein-cargo">${label}</span>`;
