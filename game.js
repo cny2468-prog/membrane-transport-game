@@ -700,7 +700,7 @@ function animateTransport(moves) {
 function showTransportInset(move, gateX, gateY, sceneRect) {
   const inset = $("#membraneInset");
   const units = Array.from({ length: 13 }, () => `<span class="lipid-unit"><b></b><i></i><i></i></span>`).join("");
-  const label = move.id === "glucose" ? "포도당" : move.id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : move.id === "protein" ? "단백질" : move.id === "waste" ? "노폐물" : "O₂";
+  const label = move.id === "glucose" ? "G" : move.id === "oxygen" && state.simpleDiffusionId === "carbon-dioxide" ? "CO₂" : move.id === "protein" ? "P" : move.id === "waste" ? "W" : "O₂";
   let detail = `<div class="bilayer-row outer">${units}</div><div class="bilayer-row inner">${units}</div>`;
   if (move.tool === "simple") detail += `<span class="inset-oxygen">${label}</span>`;
   if (move.tool === "facilitated") detail += `<span class="inset-protein"><i></i><b></b></span><span class="inset-oxygen protein-cargo ${move.id === "glucose" ? "inset-glucose" : ""}">${label}</span>`;
@@ -805,7 +805,8 @@ function showResult(success, failure = "time") {
   $("#resultMessage").textContent = success ? (last ? `세 단계 완료! 총점은 ${state.score}점입니다.${loungeMessage}` : `남은 시간까지 반영해 ${state.stageScore}점을 받았습니다.`) : `${state.stageScore}점을 받았습니다. 아래 힌트를 확인한 뒤 재도전하거나 다음 단계로 이동할 수 있습니다.${loungeMessage}`;
   $("#resultFact").textContent = success ? currentStage().fact : currentStage().hint;
   document.querySelector(".score-row span").textContent = `총점 · 이번 단계 ${state.stageScore}/100`;
-  $("#scoreValue").textContent = `${state.score}/300`;
+  const scoreCap = (state.stage + 1) * 100;
+  $("#scoreValue").textContent = `${state.score}/${scoreCap}`;
   $("#nextButton").textContent = last ? "전체 결과 마치기" : `${state.stage + 2}단계로 이동`;
   $("#retryButton").hidden = success;
   $("#resultModal").classList.remove("hidden");
