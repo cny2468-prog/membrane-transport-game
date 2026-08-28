@@ -849,7 +849,13 @@ function showResult(success, failure = "time") {
   const scoreCap = (state.stage + 1) * 100;
   $("#scoreValue").textContent = `${state.score}/${scoreCap}`;
   $("#nextButton").textContent = last ? "전체 결과 마치기" : `${state.stage + 2}단계로 이동`;
-  $("#retryButton").hidden = success;
+  if (last) {
+    $("#resultMessage").textContent = state.score >= 250
+      ? "\uC0DD\uBA85\uACFC\uD559 \uB77C\uC6B4\uC9C0\uC5D0 \uCEA1\uCCD0\uD574\uC11C \uC790\uB791\uD574\uBCF4\uC138\uC694!"
+      : "\uB2E4\uC2DC \uD55C \uBC88 \uB3C4\uC804\uD558\uC5EC 250\uC810\uC5D0 \uB3C4\uB2EC\uD574\uBCF4\uC138\uC694!";
+  }
+  $("#retryButton").hidden = !last && success;
+  if (last) { $("#retryButton").textContent = "\uC774 \uB2E8\uACC4 \uB2E4\uC2DC\uD558\uAE30"; $("#nextButton").textContent = "\uCC98\uC74C\uC73C\uB85C \uAC00\uAE30"; }
   $("#resultModal").classList.remove("hidden");
 }
 
