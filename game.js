@@ -856,6 +856,15 @@ function showResult(success, failure = "time") {
   }
   $("#retryButton").hidden = !last && success;
   if (last) { $("#retryButton").textContent = "\uC774 \uB2E8\uACC4 \uB2E4\uC2DC\uD558\uAE30"; $("#nextButton").textContent = "\uCC98\uC74C\uC73C\uB85C \uAC00\uAE30"; }
+  if (last) {
+    $("#retryButton").hidden = true;
+    $("#nextButton").hidden = true;
+    clearTimeout(showResult.finalButtonsTimer);
+    showResult.finalButtonsTimer = setTimeout(() => {
+      $("#retryButton").hidden = false;
+      $("#nextButton").hidden = false;
+    }, 1800);
+  }
   $("#resultModal").classList.remove("hidden");
 }
 
