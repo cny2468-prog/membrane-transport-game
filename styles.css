@@ -286,3 +286,4 @@
 .particle.carbon-dioxide i:first-child{left:0!important}.particle.carbon-dioxide i:nth-child(2){right:0!important}.particle.carbon-dioxide b{position:absolute!important;left:14px!important;top:7px!important;color:#594c7a!important;font-size:7px!important;background:#fff!important;border-radius:5px;padding:1px 2px}
 .particle.carbon-dioxide i:nth-child(2){left:13px!important;right:auto!important}.particle.carbon-dioxide i:nth-child(3){right:0!important;left:auto!important}
 .inset-carbon-dioxide{width:38px!important;height:24px!important;border-radius:0!important;background:linear-gradient(90deg,#d9d1ee 0 34%,#fff 34% 66%,#d9d1ee 66%)!important;border-color:#6f638f!important;color:#594c7a!important}
+.score-guidance{margin:14px 0;padding:14px 16px;background:#fff0b8;border:2px solid var(--coral);color:#173a3f;font:20px/1.35 "Jua",sans-serif;text-align:center;box-shadow:4px 4px 0 rgba(23,58,63,.18)}

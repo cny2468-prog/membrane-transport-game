@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260828-31">
+  <link rel="stylesheet" href="styles.css?v=20260828-32">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -126,6 +126,7 @@
       <p class="kicker" id="resultKicker">STAGE CLEAR</p>
       <h2 id="resultTitle">막을 제대로 작동시켰어요</h2>
       <p id="resultMessage"></p>
+      <div id="scoreGuidance" class="score-guidance" aria-live="assertive"></div>
       <div class="result-fact" id="resultFact"></div>
       <div class="score-row"><span>총점 · 단계별 100점</span><strong id="scoreValue">0/100</strong></div>
       <button class="result-retry" id="retryButton" type="button" hidden>이 단계 다시 도전</button>
@@ -134,6 +135,6 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="game.js?v=20260828-31"></script>
+  <script src="game.js?v=20260828-32"></script>
 </body>
 </html>
