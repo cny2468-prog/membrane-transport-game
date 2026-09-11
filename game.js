@@ -479,7 +479,9 @@ function renderGoals() {
   const goals = currentStage().goals.map((goal, index) => {
     if (state.stage === 2 && index === 0) return "Na⁺: 세포 밖 9개 → 12개 이상";
     if (state.stage === 2 && index === 1) return "K⁺: 세포 안 6개 → 8개 이상";
-    const diffusionGoal = (state.stage === 0 && index === 1) || (state.stage === 1 && index === 2) || (state.stage === 2 && index === 2);
+    if (state.stage === 0 && index === 0) return `${diffusionLabel}: 안팎의 개수 차이 1 이하`;
+    if (state.stage === 0 && index === 1) return "포도당: 안팎의 개수 차이 1 이하";
+    const diffusionGoal = (state.stage === 1 && index === 2) || (state.stage === 2 && index === 2);
     return diffusionGoal ? `${diffusionLabel}: 세포 안팎 개수 차이 1 이하` : goal;
   });
   $("#goalList").innerHTML = goals.map((goal, index) => `<div class="goal-line ${checks[index] ? "done" : ""}"><i>${checks[index] ? "✓" : ""}</i><span>${goal}</span></div>`).join("");
@@ -525,10 +527,10 @@ function makeParticles(container, item, count, inside, groupIndex) {
     } else {
       const side = (index + groupIndex) % 4;
       const offset = 9 + ((index * 23 + groupIndex * 11) % 78);
-      if (side === 0) { x = offset; y = 0; }
-      if (side === 1) { x = 100; y = offset; }
-      if (side === 2) { x = offset; y = 100; }
-      if (side === 3) { x = 0; y = offset; }
+      if (side === 0) { x = offset; y = 6; }
+      if (side === 1) { x = 94; y = offset; }
+      if (side === 2) { x = offset; y = 94; }
+      if (side === 3) { x = 6; y = offset; }
     }
     dot.style.left = `${x}%`; dot.style.top = `${y}%`;
     const driftAngle = ((index * 83 + groupIndex * 47) % 360) * Math.PI / 180;
