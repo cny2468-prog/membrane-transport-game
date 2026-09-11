@@ -525,10 +525,10 @@ function makeParticles(container, item, count, inside, groupIndex) {
     } else {
       const side = (index + groupIndex) % 4;
       const offset = 9 + ((index * 23 + groupIndex * 11) % 78);
-      if (side === 0) { x = offset; y = 3 + groupIndex * 3; }
-      if (side === 1) { x = 94 - groupIndex * 2; y = offset; }
-      if (side === 2) { x = offset; y = 94 - groupIndex * 3; }
-      if (side === 3) { x = 3 + groupIndex * 2; y = offset; }
+      if (side === 0) { x = offset; y = 0; }
+      if (side === 1) { x = 100; y = offset; }
+      if (side === 2) { x = offset; y = 100; }
+      if (side === 3) { x = 0; y = offset; }
     }
     dot.style.left = `${x}%`; dot.style.top = `${y}%`;
     const driftAngle = ((index * 83 + groupIndex * 47) % 360) * Math.PI / 180;
