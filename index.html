@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260911-39">
+  <link rel="stylesheet" href="styles.css?v=20260911-40">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -106,10 +106,9 @@
         <div><b>1</b><span><strong>장치 놓기</strong><small>카드와 막의 빈칸을 차례로 누르세요.</small></span></div>
         <div><b>2</b><span><strong>횟수 정하기</strong><small>＋·−로 나눈 뒤 막을 작동시키세요.</small></span></div>
       </div>
-      <div class="howto-demo" aria-label="실제 게임 사용법 시뮬레이션">
-        <strong>게임 방법 · 10초 미리보기</strong>
-        <div class="demo-board"><div class="demo-tools"><span>① 장치 선택</span><b class="demo-card">O₂<br><small>인지질 이중층</small></b><em class="demo-arrow">↓ ② 물음표에 놓기</em></div><div class="demo-mini-cell"><i class="demo-out-dot"></i><b class="demo-mini-membrane"></b><span class="demo-slot">?<b class="demo-installed">✓</b></span><i class="demo-in-dot"></i><em class="demo-arrow demo-arrow-run">물질 이동 →</em></div><div class="demo-controls"><span>③ 이동 횟수 <b class="demo-cycle">＋ 1회 → 2회</b></span><small class="demo-status">현재 상태: 밖 7 · 안 2<br>성공조건: 차이 1 이하</small><button type="button" tabindex="-1">④ 막 작동시키기</button></div></div>
-        <div class="demo-steps"><span>장치 선택</span><span>물음표에 장착</span><span>＋/－로 횟수 설정</span><span>상태·조건 확인 후 실행</span></div>
+      <div class="howto-demo" aria-label="게임 방법">
+        <strong>게임 방법</strong>
+        <ol class="howto-steps"><li><b>1번</b> 이동 장치 카드를 클릭하세요.</li><li><b>2번</b> 막의 물음표 자리를 클릭해 장착하세요.</li><li><b>3번</b> ＋·－ 버튼으로 이동 횟수를 정하세요.</li><li><b>4번</b> 현재 물질 상태와 성공조건을 확인하고 ‘막 작동시키기’를 누르세요.</li></ol>
       </div>
       <p class="teacher-note"><b>성공하려면</b> <span id="introTip">오른쪽의 물질 개수를 비교하고, 산소와 포도당에 몇 번씩 수송 횟수를 나눌지 계산하세요.</span></p>
       <button class="primary-button" id="startButton" type="button">1단계 시작</button>
@@ -141,6 +140,6 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="game.js?v=20260911-39"></script>
+  <script src="game.js?v=20260911-40"></script>
 </body>
 </html>
