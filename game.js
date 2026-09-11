@@ -533,7 +533,7 @@ function makeParticles(container, item, count, inside, groupIndex) {
     dot.style.left = `${x}%`; dot.style.top = `${y}%`;
     const driftAngle = ((index * 83 + groupIndex * 47) % 360) * Math.PI / 180;
     const secondAngle = driftAngle + Math.PI * .72;
-    const driftDistance = (inside ? 25 : 34) + (index % 4) * 7;
+    const driftDistance = (inside ? 18 : 8) + (index % 3) * 3;
     dot.style.setProperty("--drift-x", `${Math.cos(driftAngle) * driftDistance}px`);
     dot.style.setProperty("--drift-y", `${Math.sin(driftAngle) * driftDistance}px`);
     dot.style.setProperty("--drift-x2", `${Math.cos(secondAngle) * driftDistance * .82}px`);
