@@ -857,6 +857,12 @@ function showResult(success, failure = "time") {
   } else {
     $("#scoreGuidance").textContent = "";
   }
+  if (last) {
+    $("#resultMessage").textContent = `3단계 완료! 총점은 ${state.score}점입니다.`;
+    $("#scoreGuidance").textContent = state.score >= 250
+      ? "생명과학 라운지에 캡처해서 자랑해보세요!"
+      : "다시 한 번 도전하여 250점에 도달해보세요!";
+  }
   $("#retryButton").hidden = !last && success;
   if (last) { $("#retryButton").textContent = "\uC774 \uB2E8\uACC4 \uB2E4\uC2DC\uD558\uAE30"; $("#nextButton").textContent = "\uCC98\uC74C\uC73C\uB85C \uAC00\uAE30"; }
   if (last) {
